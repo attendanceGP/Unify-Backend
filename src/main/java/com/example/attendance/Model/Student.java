@@ -17,6 +17,7 @@ public class Student extends User{
     @ManyToMany(mappedBy = "students")
     private List<Course> courses;
 
-    @ManyToMany(mappedBy = "students")
+    @ManyToMany
+    @JoinColumn(name = "group_id")
     private List<Group> groups;
 }

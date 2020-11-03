@@ -1,6 +1,7 @@
 package com.example.attendance.Model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -9,9 +10,9 @@ public class Group {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
+    @NotNull
     private String name;
 
-    @ManyToMany
-    @JoinColumn(name = "student_id")
+    @ManyToMany(mappedBy = "groups")
     private List<Student> students;
 }
