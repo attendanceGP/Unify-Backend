@@ -10,10 +10,13 @@ public class Slot {
 
     private Integer slotNumber;
 
+    private String type;
 
     @ManyToOne
     @JoinColumn(name = "fk_course_code")
     private Course course;
 
     private String studentGroup;
+
+    private String day;
 }

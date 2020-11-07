@@ -2,7 +2,7 @@ package com.example.attendance.Models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.Date;
 
 @Entity
 public class UserCourse {
@@ -24,6 +24,12 @@ public class UserCourse {
     private Integer attendanceCount;
 
     private Integer absenceCount;
+
+    private String type;
+
+    @Basic
+    @Temporal(TemporalType.DATE)
+    private Date date;
 
     public UserCourse() {
     }

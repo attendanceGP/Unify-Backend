@@ -8,9 +8,7 @@ import com.example.attendance.Service.StudentCourseService;
 import com.example.attendance.Service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping(path = "/student")
@@ -24,8 +22,14 @@ public class StudentResource {
     @Autowired
     private StudentCourseService studentCourseService;
 
-    @PostMapping(path = "/add") // Map ONLY POST Requests
-    public @ResponseBody void add()
+    @PostMapping(path = "/add")
+    public @ResponseBody void add(@RequestBody Student student){
+        studentService.addStudent(student);
+    }
+
+    @PostMapping(path = "/test") // NOT ACTUAL FUNCTION
+                                // DO NOT COPY INTO OTHER CLASSES
+    public @ResponseBody void test()
     {
         Student student = new Student(20170171, "Ali Samy", 4, 4.0);
 
