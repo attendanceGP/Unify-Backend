@@ -25,12 +25,6 @@ public class UserCourse {
 
     private Integer absenceCount;
 
-    private String type;
-
-    @Basic
-    @Temporal(TemporalType.DATE)
-    private Date date;
-
     public UserCourse() {
     }
 

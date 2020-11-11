@@ -5,6 +5,8 @@ import com.example.attendance.Repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CourseService {
     @Autowired
@@ -12,5 +14,9 @@ public class CourseService {
 
     public void addCourse(Course course){
         courseRepository.save(course);
+    }
+
+    public Optional<Course> findById(String id){
+        return courseRepository.findById(id);
     }
 }
