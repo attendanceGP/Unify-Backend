@@ -1,0 +1,18 @@
+{
+    "student": {
+        "id": 20170171,
+        "name": "Ali",
+        "level": 4,
+        "gpa": 4.3
+    },
+    "courseList": [
+        {
+            "courseCode": "CS464",
+            "group": "CS_DS_1"
+        },
+        {
+            "CS467": "CS498",
+            "group": "CS_DS_1"
+        }
+    ]
+}
