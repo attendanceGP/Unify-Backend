@@ -9,6 +9,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 
+import java.util.Optional;
+
 @Service
 public class StudentService {
     @Autowired
@@ -34,17 +36,24 @@ public class StudentService {
     public StudentCourseContainer getStudentCourses(String username, String password){
         String url = "http://my-json-server.typicode.com/alialfie/testingJSON/db";  // dummy data for testing
 
-        ResponseEntity<StudentCourseContainer> response =
-                this.restTemplate.getForEntity(url, StudentCourseContainer.class);
-
-        if(response.getStatusCode() == HttpStatus.OK) {
-            return response.getBody();
-        } else {
+        try{
+            ResponseEntity<StudentCourseContainer> response =
+                    this.restTemplate.getForEntity(url, StudentCourseContainer.class);
+            if(response.getStatusCode() == HttpStatus.OK && response.getStatusCodeValue() == 200) {
+                return response.getBody();
+            } else {
+                return null;
+            }
+        }catch (Exception e){
             return null;
         }
     }
 
     public void addStudent(Student student){
         studentRepository.save(student);
+    }
+
+    public Optional<Student> findById(Integer id){
+        return studentRepository.findById(id);
     }
 }

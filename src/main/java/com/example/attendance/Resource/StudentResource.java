@@ -44,15 +44,15 @@ public class StudentResource {
 //        courseService.addCourse(course);
 //        studentCourseService.addStudentCourse(userCourse);
 
-        StudentCourseContainer studentCourseContainer = studentService.getStudentCourses("x", "x");
-        System.out.println(studentCourseContainer.getStudent().getGpa());
-        System.out.println(studentCourseContainer.getCourseList()[1].getCourseCode());
+//        StudentCourseContainer studentCourseContainer = studentService.getStudentCourses("x", "x");
+//        System.out.println(studentCourseContainer.getStudent().getGpa());
+//        System.out.println(studentCourseContainer.getCourseList()[1].getCourseCode());
 
-//        Course course = new Course("CS464", "Genetic Algorithms");
-//        courseService.addCourse(course);
-//
-//        course = new Course("CS467", "Machine Learning");
-//        courseService.addCourse(course);
+        Course course = new Course("CS464", "Genetic Algorithms");
+        courseService.addCourse(course);
+
+        course = new Course("CS467", "Machine Learning");
+        courseService.addCourse(course);
 
     }
 
@@ -60,16 +60,25 @@ public class StudentResource {
     public @ResponseBody String login(@RequestParam String username, @RequestParam String password){
         StudentCourseContainer studentCourseContainer = studentService.getStudentCourses(username, password);
 
-        if(studentCourseContainer == null) return "An Error Occurred.";
+        if(studentCourseContainer == null) return "An error has occurred.";
+
+        Optional<Student> studentOptional = studentService.findById(studentCourseContainer.getStudent().getId());
+
+        if(studentOptional.isPresent())  return "User already exists.";
+
+        for(int i=0; i<studentCourseContainer.getCourseList().length; i++) {
+            Optional<Course> courseOptional =
+                    courseService.findById(studentCourseContainer.getCourseList()[i].getCourseCode());
+            if (courseOptional.isEmpty()) {
+                return "Course id: " + studentCourseContainer.getCourseList()[i].getCourseCode() + " is not found.";
+            }
+        }
 
         studentService.addStudent(studentCourseContainer.getStudent());
 
         for(int i=0; i<studentCourseContainer.getCourseList().length; i++){
             Optional<Course> courseOptional =
                     courseService.findById(studentCourseContainer.getCourseList()[i].getCourseCode());
-            if(courseOptional.isEmpty()){
-                return "Course id: " + studentCourseContainer.getCourseList()[i].getCourseCode() + " is not found.";
-            }
 
             UserCourse userCourse =
                     new UserCourse(studentCourseContainer.getStudent(), courseOptional.get(),
@@ -78,6 +87,6 @@ public class StudentResource {
             studentCourseService.addStudentCourse(userCourse);
         }
 
-        return "Success";
+        return "Success.";
     }
 }
