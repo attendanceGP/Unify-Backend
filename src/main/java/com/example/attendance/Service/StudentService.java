@@ -1,7 +1,12 @@
 package com.example.attendance.Service;
 
 import com.example.attendance.Containers.StudentCourseContainer;
+import com.example.attendance.Models.Attendance;
+import com.example.attendance.Models.Course;
 import com.example.attendance.Models.Student;
+import com.example.attendance.Models.TeachingAssistant;
+import com.example.attendance.Repository.AttendanceRepository;
+import com.example.attendance.Repository.CourseRepository;
 import com.example.attendance.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,12 +14,20 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private AttendanceRepository attendanceRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
 
     private final RestTemplate restTemplate;    // to perform http requests to get students from uni
 
@@ -55,5 +68,24 @@ public class StudentService {
 
     public Optional<Student> findById(Integer id){
         return studentRepository.findById(id);
+    }
+
+
+    public String postAttendance(Date date, String userGroup, String courseId, Integer userId){
+        List<Attendance> entries = attendanceRepository.findByCourseAndUserGroupAndDate(date, userGroup, courseId);
+
+        if(entries.size() == 0){
+            return "No TA started taking attendance for this course and day.";
+        }
+
+        Student student = studentRepository.findById(userId).get();
+
+        Course course = courseRepository.findById(courseId).get();
+
+        Attendance attendance = new Attendance(student, course, userGroup, date);
+
+        attendanceRepository.save(attendance);
+
+        return "Done.";
     }
 }

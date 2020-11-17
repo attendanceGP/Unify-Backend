@@ -3,14 +3,18 @@ package com.example.attendance.Resource;
 import com.example.attendance.Containers.StudentCourseContainer;
 import com.example.attendance.Models.Course;
 import com.example.attendance.Models.Student;
+import com.example.attendance.Models.User;
 import com.example.attendance.Models.UserCourse;
+import com.example.attendance.Repository.StudentCourseRepository;
 import com.example.attendance.Service.CourseService;
 import com.example.attendance.Service.StudentCourseService;
 import com.example.attendance.Service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Controller
@@ -54,6 +58,8 @@ public class StudentResource {
         course = new Course("CS467", "Machine Learning");
         courseService.addCourse(course);
 
+
+
     }
 
     @PostMapping(path = "login")
@@ -88,5 +94,11 @@ public class StudentResource {
         }
 
         return "Success.";
+    }
+
+    @PostMapping( path = "postattendance")
+    public @ResponseBody String postAttendance(@RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,
+                                               @RequestParam String userGroup, @RequestParam String courseId, @RequestParam Integer userId){
+        return studentService.postAttendance(date, userGroup, courseId, userId);
     }
 }

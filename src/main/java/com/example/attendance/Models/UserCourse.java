@@ -12,14 +12,14 @@ public class UserCourse {
 
     @ManyToOne
     @JoinColumn(name = "fk_user_id")
-    private Student student;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "fk_course_code")
     private Course course;
 
     @NotNull
-    private String studentGroup;
+    private String userGroup;
 
     private Integer attendanceCount;
 
@@ -28,16 +28,16 @@ public class UserCourse {
     public UserCourse() {
     }
 
-    public UserCourse(Student student, Course course, @NotNull String studentGroup) {
-        this.student = student;
+    public UserCourse(User user, Course course, @NotNull String userGroup) {
+        this.user = user;
         this.course = course;
-        this.studentGroup = studentGroup;
+        this.userGroup = userGroup;
     }
 
-    public UserCourse(Student student, Course course, @NotNull String studentGroup, Integer attendanceCount, Integer absenceCount) {
-        this.student = student;
+    public UserCourse(User user, Course course, @NotNull String userGroup, Integer attendanceCount, Integer absenceCount) {
+        this.user = user;
         this.course = course;
-        this.studentGroup = studentGroup;
+        this.userGroup = userGroup;
         this.attendanceCount = attendanceCount;
         this.absenceCount = absenceCount;
     }
@@ -50,12 +50,12 @@ public class UserCourse {
         this.id = id;
     }
 
-    public Student getStudent() {
-        return student;
+    public User getUser() {
+        return user;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public void setUser (User user) {
+        this.user = user;
     }
 
     public Course getCourse() {
@@ -66,12 +66,12 @@ public class UserCourse {
         this.course = course;
     }
 
-    public String getStudentGroup() {
-        return studentGroup;
+    public String getUserGroup() {
+        return userGroup;
     }
 
-    public void setStudentGroup(String studentGroup) {
-        this.studentGroup = studentGroup;
+    public void setUserGroup(String userGroup) {
+        this.userGroup = userGroup;
     }
 
     public Integer getAttendanceCount() {
