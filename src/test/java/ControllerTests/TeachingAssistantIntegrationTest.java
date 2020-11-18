@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
         //case where all inputs go into the request in their correct formats
         @Test
-        void whenValidInput_thenReturns200() throws Exception {
+        void whenPostAttendanceValidInput_thenReturns200() throws Exception {
             this.mockMvc.perform(post("/ta/postattendance?date=22-09-2018&userGroup=G2&courseId=CS467&userId=20170349")
                     .contentType("application/json"))
                     .andExpect(status().isOk());
@@ -49,7 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
         //all cases when any value in the post request is null
     @Test
-    void whenInvalidInput_thenReturns400() throws Exception {
+    void whenPostAttendanceInvalidInput_thenReturns400() throws Exception {
 
         this.mockMvc.perform(post("/ta/postattendance?date=null&userGroup=G2&courseId=CS467&userId=20170349"))
                 .andExpect(status().isBadRequest());

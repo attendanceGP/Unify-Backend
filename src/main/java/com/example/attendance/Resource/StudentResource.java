@@ -14,6 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.Optional;
 
@@ -30,7 +31,7 @@ public class StudentResource {
     private StudentCourseService studentCourseService;
 
     @PostMapping( value = "/add", consumes = "application/json")
-    public @ResponseBody void add(@RequestBody Student student){
+    public @ResponseBody void add(@Valid @RequestBody Student student){
         studentService.addStudent(student);
     }
 
