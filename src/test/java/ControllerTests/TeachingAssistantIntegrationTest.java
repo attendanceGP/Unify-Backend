@@ -46,17 +46,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                     .contentType("application/json"))
                     .andExpect(status().isOk());
         }
-
         //all cases when any value in the post request is null
     @Test
     void whenPostAttendanceInvalidInput_thenReturns400() throws Exception {
 
         this.mockMvc.perform(post("/ta/postattendance?date=null&userGroup=G2&courseId=CS467&userId=20170349"))
+                //checks the status of the request, this will be true and have a green checkmark if the
+                //request is a bad request meaning something is missing from the request and its code is 400
                 .andExpect(status().isBadRequest());
+
         this.mockMvc.perform(post("/ta/postattendance?date=null&courseId=CS467&userId=20170349"))
                 .andExpect(status().isBadRequest());
+
         this.mockMvc.perform(post("/ta/postattendance?date=null&userGroup=G2&userId=20170349"))
                 .andExpect(status().isBadRequest());
+
         this.mockMvc.perform(post("/ta/postattendance?date=null&userGroup=G2&courseId=CS467&userId=null"))
                 .andExpect(status().isBadRequest());
     }

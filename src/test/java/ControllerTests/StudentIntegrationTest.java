@@ -1,8 +1,8 @@
 package ControllerTests;
 
+import UseCaseTestingInterfaces.AddUseCase;
 import com.example.attendance.AttendanceApplication;
 import com.example.attendance.Models.Student;
-import com.example.attendance.Models.User;
 import com.example.attendance.Resource.StudentResource;
 import com.example.attendance.Service.CourseService;
 import com.example.attendance.Service.StudentCourseService;
@@ -18,7 +18,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-
 
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -43,6 +42,8 @@ class StudentIntegrationTest {
     private CourseService courseService;
     @MockBean
     private StudentCourseService studentCourseService;
+    @MockBean
+    private AddUseCase addUseCase;
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -121,4 +122,22 @@ class StudentIntegrationTest {
                 .content(objectMapper.writeValueAsString(student)))
                 .andExpect(status().isBadRequest());
     }
+
+
+    /*@Test
+    void whenAddHasValidInput_thenMapsToBusinessLogic() throws Exception {
+        Student student = new Student(20170349,"Youssef Mohamed",4,2.8);
+
+        this.mockMvc.perform(post("/student/add")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(student)))
+                .andExpect(status().isOk());
+
+        ArgumentCaptor<Student> studentCaptor = ArgumentCaptor.forClass(Student.class);
+        verify(addUseCase,times(1)).addStudent(studentCaptor.capture());
+        assertThat(studentCaptor.getValue().getId()).isEqualTo(20170349);
+        assertThat(studentCaptor.getValue().getName()).isEqualTo("Youssef Mohamed");
+        assertThat(studentCaptor.getValue().getLevel()).isEqualTo(4);
+        assertThat(studentCaptor.getValue().getGpa()).isEqualTo(2.8);
+    }*/
 }
