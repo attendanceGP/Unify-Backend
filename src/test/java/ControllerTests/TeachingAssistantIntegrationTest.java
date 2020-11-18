@@ -2,22 +2,25 @@ package ControllerTests;
 
 import com.example.attendance.AttendanceApplication;
 import com.example.attendance.Resource.TeachingAssistantResource;
+import com.example.attendance.Service.TeachingAssistantService;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
-@ContextConfiguration(classes = AttendanceApplication.class)
+    @RunWith(SpringRunner.class)
+    @ContextConfiguration(classes = AttendanceApplication.class)
     @WebMvcTest(controllers = TeachingAssistantResource.class)
     class TeachingAssistantIntegrationTest {
         @Autowired
@@ -26,7 +29,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         @Autowired
         private WebApplicationContext webApplicationContext;
 
-        //used to build a mockMvc instance to be used for testing requests
+        @MockBean
+        private TeachingAssistantService teachingAssistantService;
+
+        // used to create a mockMvc instance to use for testing
         @Before
         public void setUp()
         {
@@ -55,4 +61,4 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 .andExpect(status().isBadRequest());
     }
 
-    }
+}
