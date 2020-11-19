@@ -1,12 +1,10 @@
 package com.example.attendance.Service;
 
 import com.example.attendance.Containers.StudentCourseContainer;
-import com.example.attendance.Models.Attendance;
-import com.example.attendance.Models.Course;
-import com.example.attendance.Models.Student;
-import com.example.attendance.Models.TeachingAssistant;
+import com.example.attendance.Models.*;
 import com.example.attendance.Repository.AttendanceRepository;
 import com.example.attendance.Repository.CourseRepository;
+import com.example.attendance.Repository.StudentCourseRepository;
 import com.example.attendance.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +26,9 @@ public class StudentService {
 
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private StudentCourseRepository studentCourseRepository;
 
     private final RestTemplate restTemplate;    // to perform http requests to get students from uni
 
@@ -72,20 +73,30 @@ public class StudentService {
 
 
     public String postAttendance(Date date, String userGroup, String courseId, Integer userId){
+
         List<Attendance> entries = attendanceRepository.findByCourseAndUserGroupAndDate(date, userGroup, courseId);
 
-        if(entries.size() == 0){
+        List<UserCourse> userCoursesFound = studentCourseRepository.findUserCourseByCourseAndAndUser(userId,courseId);
+
+        //we check whether the group the student is trying to enter into is the group
+        //he is assigned to for that specific course from the userCourse table
+        if(!(userCoursesFound.get(0).getUserGroup().contentEquals(userGroup))){
+            return "you are not registered in this group for this course";
+        }
+        else if(entries.size() == 0){
             return "No TA started taking attendance for this course and day.";
         }
+        else {
 
-        Student student = studentRepository.findById(userId).get();
+            Student student = studentRepository.findById(userId).get();
 
-        Course course = courseRepository.findById(courseId).get();
+            Course course = courseRepository.findById(courseId).get();
 
-        Attendance attendance = new Attendance(student, course, userGroup, date);
+            Attendance attendance = new Attendance(student, course, userGroup, date);
 
-        attendanceRepository.save(attendance);
+            attendanceRepository.save(attendance);
 
-        return "Done.";
+            return "Done.";
+        }
     }
 }
