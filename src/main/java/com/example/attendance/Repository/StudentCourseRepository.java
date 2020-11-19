@@ -10,8 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface StudentCourseRepository extends CrudRepository<UserCourse, Integer> {
-    //List<UserCourse> findByUserID
 
-
-    List<UserCourse> findByFk_user_idAndFk_course_id(Integer fk_user_id, String fk_course_id);
+    @Query(value = "SELECT * FROM user_course WHERE fk_course_code = :courseId and fk_user_id = :userId", nativeQuery = true)
+    List<UserCourse> findByStudentIDAndCourseID(@Param("userId") Integer userId, @Param("courseId") String courseId);
 }

@@ -53,12 +53,8 @@ public class TeachingAssistantService {
     }
 
     public ArrayList<Date> getAbsence(Integer StudentID, Integer userID, String CourseID){
-        List<UserCourse> StudentCourseGroup = studentCourseRepository.findByFk_user_idAndFk_course_id(StudentID, CourseID);
-        System.out.println("gebt el list");
-
+        List<UserCourse> StudentCourseGroup = studentCourseRepository.findByStudentIDAndCourseID(StudentID, CourseID);
         String group= StudentCourseGroup.get(0).getUserGroup();
-        System.out.println("gebt el group " + group);
-
         List<Attendance> TAList = attendanceRepository.findByUserIDAndCourseIDAndGroup(userID, CourseID, group);
         List<Attendance> StudentList = attendanceRepository.findByUserIDAndCourseIDAndGroup(StudentID, CourseID, group);
         System.out.println("number of absences : " + (TAList.size()-StudentList.size()));
@@ -73,27 +69,5 @@ public class TeachingAssistantService {
         }
         TADates.removeAll(stdDates);
         return TADates;
-//        if(StudentList.isEmpty()){
-//            for(Attendance atnd : TAList){
-//                absenceDates.add(atnd.getDate());
-//            }
-//        }
-//        else{
-//            for(Attendance taRecords: TAList) {
-//                //System.out.println("here");
-//                for(Attendance studentRecords: StudentList){
-//                    //System.out.println("here");
-//                    System.out.println(studentRecords.getDate());
-//                    System.out.println(taRecords.getDate());
-//                    if(taRecords.getDate() == studentRecords.getDate()) break;
-//                    if(studentRecords == StudentList.get(StudentList.size()-1)){
-//                        System.out.println("here");
-//                        absenceDates.add(taRecords.getDate());
-//                    }
-//                }
-//            }
-//        }
-
-        //return absenceDates;
     }
 }

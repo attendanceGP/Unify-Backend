@@ -2,7 +2,7 @@ package com.example.attendance.Resource;
 
 import com.example.attendance.Containers.StudentCourseContainer;
 import com.example.attendance.Models.*;
-//import com.example.attendance.Repository.StudentCourseRepository;
+import com.example.attendance.Repository.StudentCourseRepository;
 import com.example.attendance.Repository.TeachingAssistantRepository;
 import com.example.attendance.Service.CourseService;
 import com.example.attendance.Service.StudentCourseService;
