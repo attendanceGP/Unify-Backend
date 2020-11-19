@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 @Controller
@@ -26,7 +27,8 @@ public class TeachingAssistantResource {
     }
 
     @GetMapping( path = "getAbsence")
-    public @ResponseBody String getAbsence(@RequestParam Integer studentID, @RequestParam Integer userID, @RequestParam String courseId){
+    public @ResponseBody
+    ArrayList<Date> getAbsence(@RequestParam Integer studentID, @RequestParam Integer userID, @RequestParam String courseId){
         return teachingAssistantService.getAbsence(studentID, userID, courseId);
     }
 }

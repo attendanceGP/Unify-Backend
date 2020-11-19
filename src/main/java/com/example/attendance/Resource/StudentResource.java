@@ -1,14 +1,13 @@
 package com.example.attendance.Resource;
 
 import com.example.attendance.Containers.StudentCourseContainer;
-import com.example.attendance.Models.Course;
-import com.example.attendance.Models.Student;
-import com.example.attendance.Models.User;
-import com.example.attendance.Models.UserCourse;
-import com.example.attendance.Repository.StudentCourseRepository;
+import com.example.attendance.Models.*;
+//import com.example.attendance.Repository.StudentCourseRepository;
+import com.example.attendance.Repository.TeachingAssistantRepository;
 import com.example.attendance.Service.CourseService;
 import com.example.attendance.Service.StudentCourseService;
 import com.example.attendance.Service.StudentService;
+import com.example.attendance.Service.TeachingAssistantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -69,6 +68,8 @@ public class StudentResource {
         userCourse = new UserCourse(student, course, "G1");
         studentCourseService.addStudentCourse(userCourse);
 
+
+        System.out.println("done");
     }
 
     @PostMapping(path = "login")

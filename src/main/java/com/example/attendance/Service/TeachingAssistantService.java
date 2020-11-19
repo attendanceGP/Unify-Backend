@@ -7,8 +7,10 @@ import com.example.attendance.Repository.StudentCourseRepository;
 import com.example.attendance.Repository.TeachingAssistantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +33,16 @@ public class TeachingAssistantService {
         return teachingAssistantRepository.findById(id);
     }
 
+//    public void addTeachingAssistant(TeachingAssistant TA, Student student, Course course){
+//        teachingAssistantRepository.save(TA);
+//        //Date date = new Date(2020,10,20);
+//        //Attendance attendance = new Attendance(student, course, "G1", date);
+//        //attendanceRepository.save(attendance);
+//    }
+
     public void postAttendance(Date date, String userGroup, String courseId, Integer userId){
+        TeachingAssistant ta1 = new TeachingAssistant(userId, "sarah");
+        teachingAssistantRepository.save(ta1);
         TeachingAssistant ta = teachingAssistantRepository.findById(userId).get();
 
         Course course = courseRepository.findById(courseId).get();
@@ -41,19 +52,48 @@ public class TeachingAssistantService {
         attendanceRepository.save(attendance);
     }
 
-    public String getAbsence(Integer StudentID, Integer userID, String CourseID){
-        List<UserCourse> StudentCourseGroup = studentCourseRepository.findByStudentIDAndCourseID(StudentID, CourseID);
+    public ArrayList<Date> getAbsence(Integer StudentID, Integer userID, String CourseID){
+        List<UserCourse> StudentCourseGroup = studentCourseRepository.findByFk_user_idAndFk_course_id(StudentID, CourseID);
+        System.out.println("gebt el list");
+
         String group= StudentCourseGroup.get(0).getUserGroup();
+        System.out.println("gebt el group " + group);
 
-        List<UserCourse> TAList = studentCourseRepository.findByUserIDAndCourseIDAndGroup(userID, CourseID, group);
+        List<Attendance> TAList = attendanceRepository.findByUserIDAndCourseIDAndGroup(userID, CourseID, group);
+        List<Attendance> StudentList = attendanceRepository.findByUserIDAndCourseIDAndGroup(StudentID, CourseID, group);
+        System.out.println("number of absences : " + (TAList.size()-StudentList.size()));
 
-        System.out.println("number of absences : " + (TAList.size()-StudentCourseGroup.size()));
-
-        for(UserCourse userCourse: StudentCourseGroup) {
-            for(UserCourse TAAttendanceList: TAList){
-                //userCourse.get
-            }
+        ArrayList<Date> TADates = new ArrayList<>();
+        ArrayList<Date> stdDates = new ArrayList<>();
+        for(Attendance TA : TAList){
+            TADates.add(TA.getDate());
         }
-        return "done";
+        for(Attendance std: StudentList){
+            stdDates.add(std.getDate());
+        }
+        TADates.removeAll(stdDates);
+        return TADates;
+//        if(StudentList.isEmpty()){
+//            for(Attendance atnd : TAList){
+//                absenceDates.add(atnd.getDate());
+//            }
+//        }
+//        else{
+//            for(Attendance taRecords: TAList) {
+//                //System.out.println("here");
+//                for(Attendance studentRecords: StudentList){
+//                    //System.out.println("here");
+//                    System.out.println(studentRecords.getDate());
+//                    System.out.println(taRecords.getDate());
+//                    if(taRecords.getDate() == studentRecords.getDate()) break;
+//                    if(studentRecords == StudentList.get(StudentList.size()-1)){
+//                        System.out.println("here");
+//                        absenceDates.add(taRecords.getDate());
+//                    }
+//                }
+//            }
+//        }
+
+        //return absenceDates;
     }
 }
