@@ -52,13 +52,22 @@ public class StudentResource {
 //        System.out.println(studentCourseContainer.getStudent().getGpa());
 //        System.out.println(studentCourseContainer.getCourseList()[1].getCourseCode());
 
+        Student student = new Student(20170171, "Ali Samy", 4, 4.0);
+        studentService.addStudent(student);
+
+        Student student2 = new Student(20170399, "Lamya Raed", 4, 4.0);
+        studentService.addStudent(student2);
+
         Course course = new Course("CS464", "Genetic Algorithms");
         courseService.addCourse(course);
 
+        UserCourse userCourse = new UserCourse(student2, course, "G2");
+        studentCourseService.addStudentCourse(userCourse);
         course = new Course("CS467", "Machine Learning");
         courseService.addCourse(course);
 
-
+        userCourse = new UserCourse(student, course, "G1");
+        studentCourseService.addStudentCourse(userCourse);
 
     }
 
@@ -101,4 +110,5 @@ public class StudentResource {
                                                @RequestParam String userGroup, @RequestParam String courseId, @RequestParam Integer userId){
         return studentService.postAttendance(date, userGroup, courseId, userId);
     }
+
 }

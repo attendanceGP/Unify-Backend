@@ -1,12 +1,10 @@
 package com.example.attendance.Service;
 
 import com.example.attendance.Containers.StudentCourseContainer;
-import com.example.attendance.Models.Attendance;
-import com.example.attendance.Models.Course;
-import com.example.attendance.Models.Student;
-import com.example.attendance.Models.TeachingAssistant;
+import com.example.attendance.Models.*;
 import com.example.attendance.Repository.AttendanceRepository;
 import com.example.attendance.Repository.CourseRepository;
+import com.example.attendance.Repository.StudentCourseRepository;
 import com.example.attendance.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +26,9 @@ public class StudentService {
 
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private StudentCourseRepository studentCourseRepository;
 
     private final RestTemplate restTemplate;    // to perform http requests to get students from uni
 
@@ -88,4 +89,5 @@ public class StudentService {
 
         return "Done.";
     }
+
 }

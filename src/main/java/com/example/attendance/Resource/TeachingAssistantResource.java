@@ -6,10 +6,7 @@ import com.example.attendance.Service.TeachingAssistantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -26,5 +23,10 @@ public class TeachingAssistantResource {
         teachingAssistantService.postAttendance(date, userGroup, courseId, userId);
 
         return date.toString();
+    }
+
+    @GetMapping( path = "getAbsence")
+    public @ResponseBody String getAbsence(@RequestParam Integer studentID, @RequestParam Integer userID, @RequestParam String courseId){
+        return teachingAssistantService.getAbsence(studentID, userID, courseId);
     }
 }
