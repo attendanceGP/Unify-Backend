@@ -1,14 +1,13 @@
 package com.example.attendance.Resource;
 
 import com.example.attendance.Containers.StudentCourseContainer;
-import com.example.attendance.Models.Course;
-import com.example.attendance.Models.Student;
-import com.example.attendance.Models.User;
-import com.example.attendance.Models.UserCourse;
+import com.example.attendance.Models.*;
 import com.example.attendance.Repository.StudentCourseRepository;
+import com.example.attendance.Repository.TeachingAssistantRepository;
 import com.example.attendance.Service.CourseService;
 import com.example.attendance.Service.StudentCourseService;
 import com.example.attendance.Service.StudentService;
+import com.example.attendance.Service.TeachingAssistantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -53,14 +52,25 @@ public class StudentResource {
 //        System.out.println(studentCourseContainer.getStudent().getGpa());
 //        System.out.println(studentCourseContainer.getCourseList()[1].getCourseCode());
 
+        Student student = new Student(20170171, "Ali Samy", 4, 4.0);
+        studentService.addStudent(student);
+
+        Student student2 = new Student(20170399, "Lamya Raed", 4, 4.0);
+        studentService.addStudent(student2);
+
         Course course = new Course("CS464", "Genetic Algorithms");
         courseService.addCourse(course);
 
+        UserCourse userCourse = new UserCourse(student2, course, "G2");
+        studentCourseService.addStudentCourse(userCourse);
         course = new Course("CS467", "Machine Learning");
         courseService.addCourse(course);
 
+        userCourse = new UserCourse(student, course, "G1");
+        studentCourseService.addStudentCourse(userCourse);
 
 
+        System.out.println("done");
     }
 
     @PostMapping(path = "login")
@@ -102,4 +112,5 @@ public class StudentResource {
                                                @RequestParam String userGroup, @RequestParam String courseId, @RequestParam Integer userId){
         return studentService.postAttendance(date, userGroup, courseId, userId);
     }
+
 }
