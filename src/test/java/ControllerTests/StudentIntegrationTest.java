@@ -2,7 +2,7 @@ package ControllerTests;
 
 import UseCaseTestingInterfaces.AddUseCase;
 import com.example.attendance.AttendanceApplication;
-import com.example.attendance.Models.Student;
+import com.example.attendance.User.Model.Student;
 import com.example.attendance.Resource.StudentResource;
 import com.example.attendance.Service.CourseService;
 import com.example.attendance.Service.StudentCourseService;

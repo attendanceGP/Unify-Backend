@@ -1,6 +1,6 @@
 package com.example.attendance.Service;
 
-import com.example.attendance.Models.UserCourse;
+import com.example.attendance.User.Model.UserCourse;
 import com.example.attendance.Repository.StudentCourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

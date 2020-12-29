@@ -1,6 +1,6 @@
-package com.example.attendance.Containers;
+package com.example.attendance.User.Containers;
 
-import com.example.attendance.Models.Student;
+import com.example.attendance.User.Model.Student;
 
 public class StudentCourseContainer {
     private Student student;

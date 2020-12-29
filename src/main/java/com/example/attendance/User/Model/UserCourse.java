@@ -1,8 +1,9 @@
-package com.example.attendance.Models;
+package com.example.attendance.User.Model;
+
+import com.example.attendance.Models.Course;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 @Entity
 public class UserCourse {

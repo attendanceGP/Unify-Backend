@@ -1,4 +1,4 @@
-package com.example.attendance.Containers;
+package com.example.attendance.User.Containers;
 
 public class CourseListContainer {
     private String courseCode;

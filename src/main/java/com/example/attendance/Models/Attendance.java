@@ -1,5 +1,7 @@
 package com.example.attendance.Models;
 
+import com.example.attendance.User.Model.User;
+
 import javax.persistence.*;
 import java.util.Date;
 

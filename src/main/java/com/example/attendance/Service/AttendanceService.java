@@ -2,7 +2,7 @@ package com.example.attendance.Service;
 
 import com.example.attendance.Models.Attendance;
 import com.example.attendance.Models.Course;
-import com.example.attendance.Models.Student;
+import com.example.attendance.User.Model.Student;
 import com.example.attendance.Repository.AttendanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

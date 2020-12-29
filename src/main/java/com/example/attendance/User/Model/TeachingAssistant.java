@@ -1,4 +1,4 @@
-package com.example.attendance.Models;
+package com.example.attendance.User.Model;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;

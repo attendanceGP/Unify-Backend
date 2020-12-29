@@ -5,9 +5,9 @@ import com.example.attendance.Repository.AttendanceRepository;
 import com.example.attendance.Repository.CourseRepository;
 import com.example.attendance.Repository.StudentCourseRepository;
 import com.example.attendance.Repository.TeachingAssistantRepository;
+import com.example.attendance.User.Model.TeachingAssistant;
+import com.example.attendance.User.Model.UserCourse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

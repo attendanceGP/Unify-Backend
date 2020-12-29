@@ -4,7 +4,7 @@ package com.example.attendance.Resource;
 import com.example.attendance.AttendanceApplication;
 import com.example.attendance.Models.Attendance;
 import com.example.attendance.Models.Course;
-import com.example.attendance.Models.Student;
+import com.example.attendance.User.Model.Student;
 import com.example.attendance.Repository.AttendanceRepository;
 import com.example.attendance.Repository.CourseRepository;
 import com.example.attendance.Repository.StudentRepository;

@@ -2,7 +2,7 @@ package com.example.attendance.Resource;
 
 import com.example.attendance.Models.Attendance;
 import com.example.attendance.Models.Course;
-import com.example.attendance.Models.Student;
+import com.example.attendance.User.Model.Student;
 import com.example.attendance.Service.AttendanceService;
 import com.example.attendance.Service.CourseService;
 import com.example.attendance.Service.StudentService;

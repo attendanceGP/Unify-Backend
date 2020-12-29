@@ -1,11 +1,13 @@
 package com.example.attendance.Service;
 
-import com.example.attendance.Containers.StudentCourseContainer;
+import com.example.attendance.User.Containers.StudentCourseContainer;
 import com.example.attendance.Models.*;
 import com.example.attendance.Repository.AttendanceRepository;
 import com.example.attendance.Repository.CourseRepository;
 import com.example.attendance.Repository.StudentCourseRepository;
 import com.example.attendance.Repository.StudentRepository;
+import com.example.attendance.User.Model.Student;
+import com.example.attendance.User.Model.UserCourse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
