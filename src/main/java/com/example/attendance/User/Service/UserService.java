@@ -88,7 +88,8 @@ public class UserService {
             // if longer than 30 days, return appropriate message and deny
             // if not, update date and allow login
             if (duration <= 30) {
-                return "{\"errorCode\":1}"; // error code for too many logins in 30 days
+                //TODO remove the comment when testing is done
+                //return "{\"errorCode\":1}"; // error code for too many logins in 30 days
             }
         }
 
