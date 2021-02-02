@@ -41,7 +41,7 @@ public class TeachingAssistantService {
 //    }
 
     public void postAttendance(Date date, String userGroup, String courseId, Integer userId){
-        TeachingAssistant ta1 = new TeachingAssistant(userId, "sarah");
+        TeachingAssistant ta1 = new TeachingAssistant(userId, "sarah", "s", "S");
         teachingAssistantRepository.save(ta1);
         TeachingAssistant ta = teachingAssistantRepository.findById(userId).get();
 
