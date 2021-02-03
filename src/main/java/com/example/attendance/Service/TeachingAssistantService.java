@@ -47,7 +47,7 @@ public class TeachingAssistantService {
 
         Course course = courseRepository.findById(courseId).get();
 
-        Attendance attendance = new Attendance(ta, course, userGroup, date);
+        Attendance attendance = new Attendance(ta, course, userGroup, date, false);
 
         attendanceRepository.save(attendance);
     }
