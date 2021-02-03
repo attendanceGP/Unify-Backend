@@ -14,9 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.json.JSONObject;
 
+import javax.swing.text.html.Option;
 import java.time.Duration;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -131,5 +133,13 @@ public class UserService {
         json.put("token", user.getToken());
 
         return json;
+    }
+
+    public String getToken(Integer id){
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if(optionalUser.isEmpty()) return null;
+
+        return optionalUser.get().getToken();
     }
 }

@@ -34,14 +34,12 @@ public class UserResource {
     @GetMapping(path = "login")
     public @ResponseBody
     String login(@RequestParam String username, @RequestParam String password){
-        /*
-        1- we contact the uni server with the username and password
-        2- if user is already logged in, we inform the user
-        3- if the user is not logged in, we add the courses of the user to UserCourse
-        4- if the user is valid we return a json with the user info requeired by the app
-         */
-
-        // contact uni server
         return userService.login(username, password);
+    }
+
+    @GetMapping(path = "gettoken")
+    public @ResponseBody
+    String getToken(@RequestParam Integer id){
+        return userService.getToken(id);
     }
 }
