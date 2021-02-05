@@ -27,6 +27,18 @@ public class Attendance {
     @Temporal(TemporalType.DATE)
     private Date date;
 
+    private boolean absent;
+
+    public boolean isAbsent() {
+        return absent;
+    }
+
+    public void setAbsent(boolean absent) {
+        this.absent = absent;
+    }
+
+
+
     public Attendance() {
     }
 
