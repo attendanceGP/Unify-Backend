@@ -16,8 +16,8 @@ public class Student extends User {
     public Student() {
     }
 
-    public Student(@NotNull Integer id, @NotNull String name, @NotNull Integer level, @NotNull Double gpa) {
-        super(id, name);
+    public Student(Integer id, @NotNull String name, @NotNull String username, @NotNull String password, @NotNull Integer level, @NotNull Double gpa) {
+        super(id, name, username, password);
         this.level = level;
         this.gpa = gpa;
     }

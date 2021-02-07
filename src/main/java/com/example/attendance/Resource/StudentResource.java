@@ -3,6 +3,7 @@ package com.example.attendance.Resource;
 import com.example.attendance.Containers.StudentCourseContainer;
 import com.example.attendance.Models.*;
 import com.example.attendance.Repository.StudentCourseRepository;
+import com.example.attendance.Repository.StudentRepository;
 import com.example.attendance.Repository.TeachingAssistantRepository;
 import com.example.attendance.Service.CourseService;
 import com.example.attendance.Service.StudentCourseService;
@@ -29,6 +30,9 @@ public class StudentResource {
     @Autowired
     private StudentCourseService studentCourseService;
 
+    @Autowired
+    private StudentRepository studentRepository;
+
     @PostMapping( value = "/add", consumes = "application/json")
     public @ResponseBody void add(@Valid @RequestBody Student student){
         studentService.addStudent(student);
@@ -52,10 +56,12 @@ public class StudentResource {
 //        System.out.println(studentCourseContainer.getStudent().getGpa());
 //        System.out.println(studentCourseContainer.getCourseList()[1].getCourseCode());
 
-        Student student = new Student(20170171, "Ali Samy", 4, 4.0);
+
+        Student student = new Student(20170171, "Ali Samy", "alialfie", "alialfie", 4, 4.0);
+        //studentRepository.delete(student);
         studentService.addStudent(student);
 
-        Student student2 = new Student(20170399, "Lamya Raed", 4, 4.0);
+        Student student2 = new Student(20170399, "Lamya Raed", "s", "s", 4, 4.0);
         studentService.addStudent(student2);
 
         Course course = new Course("CS464", "Genetic Algorithms");
@@ -75,6 +81,12 @@ public class StudentResource {
 
     @PostMapping(path = "login")
     public @ResponseBody String login(@RequestParam String username, @RequestParam String password){
+        /*
+        1- we contact the uni server with the username and password
+        2- if user is already logged in, we inform the user
+        3- if the user is not logged in, we add the courses of the user to UserCourse
+        4- if the user is valid we return a json with the user info requeired by the app
+         */
         StudentCourseContainer studentCourseContainer = studentService.getStudentCourses(username, password);
 
         if(studentCourseContainer == null) return "An error has occurred.";

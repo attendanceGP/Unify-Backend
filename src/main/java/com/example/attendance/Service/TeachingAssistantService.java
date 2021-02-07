@@ -41,7 +41,7 @@ public class TeachingAssistantService {
 //    }
 
     public void postAttendance(Date date, String userGroup, String courseId, Integer userId){
-        TeachingAssistant ta1 = new TeachingAssistant(userId, "sarah");
+        TeachingAssistant ta1 = new TeachingAssistant(userId, "sarah", "s", "S");
         teachingAssistantRepository.save(ta1);
         TeachingAssistant ta = teachingAssistantRepository.findById(userId).get();
 
@@ -52,22 +52,26 @@ public class TeachingAssistantService {
         attendanceRepository.save(attendance);
     }
 
-    public ArrayList<Date> getAbsence(Integer StudentID, Integer userID, String CourseID){
-        List<UserCourse> StudentCourseGroup = studentCourseRepository.findByStudentIDAndCourseID(StudentID, CourseID);
-        String group= StudentCourseGroup.get(0).getUserGroup();
-        List<Attendance> TAList = attendanceRepository.findByUserIDAndCourseIDAndGroup(userID, CourseID, group);
-        List<Attendance> StudentList = attendanceRepository.findByUserIDAndCourseIDAndGroup(StudentID, CourseID, group);
-        System.out.println("number of absences : " + (TAList.size()-StudentList.size()));
+    public String getAbsence(Integer StudentID, String CourseID){
 
-        ArrayList<Date> TADates = new ArrayList<>();
+        List<UserCourse> StudentCourseGroup = studentCourseRepository.findByStudentIDAndCourseID(StudentID, CourseID);
+        if (StudentCourseGroup.isEmpty()){
+            return "error: wrong data entered";
+        }
+        String group= StudentCourseGroup.get(0).getUserGroup();
+
+        List<Attendance> StudentList = attendanceRepository.findByUserIDAndCourseIDAndGroup(StudentID, CourseID, group);
+        //System.out.println("number of absences : " + (TAList.size()-StudentList.size()));
+
+
         ArrayList<Date> stdDates = new ArrayList<>();
-        for(Attendance TA : TAList){
-            TADates.add(TA.getDate());
-        }
+
         for(Attendance std: StudentList){
-            stdDates.add(std.getDate());
+            if (std.isAbsent()){
+                stdDates.add(std.getDate());
+            }
+
         }
-        TADates.removeAll(stdDates);
-        return TADates;
+        return stdDates.toString();
     }
 }
