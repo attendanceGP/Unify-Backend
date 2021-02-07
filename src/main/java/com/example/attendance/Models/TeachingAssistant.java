@@ -9,9 +9,9 @@ public class TeachingAssistant extends User{
     public TeachingAssistant() {
 
     }
-    public TeachingAssistant(@NotNull Integer id, @NotNull String name) {
-        super(id, name);
-    }
 
+    public TeachingAssistant(Integer id, @NotNull String name, @NotNull String username, @NotNull String password) {
+        super(id, name, username, password);
+    }
 
 }

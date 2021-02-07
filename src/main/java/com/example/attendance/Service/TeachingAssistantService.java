@@ -42,6 +42,7 @@ public class TeachingAssistantService {
 
     public void postAttendance(Date date, String userGroup, String courseId, Integer userId){
         TeachingAssistant ta1 = new TeachingAssistant(userId, "sarah");
+        TeachingAssistant ta1 = new TeachingAssistant(userId, "sarah", "s", "S");
         teachingAssistantRepository.save(ta1);
         TeachingAssistant ta = teachingAssistantRepository.findById(userId).get();
 
@@ -67,9 +68,10 @@ public class TeachingAssistantService {
         ArrayList<Date> stdDates = new ArrayList<>();
 
         for(Attendance std: StudentList){
-           if (std.isAbsent()){
-               stdDates.add(std.getDate());
-           }
+            if (std.isAbsent()){
+                stdDates.add(std.getDate());
+            }
+
 
         }
         return stdDates.toString();

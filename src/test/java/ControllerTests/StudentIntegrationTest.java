@@ -100,7 +100,7 @@ class StudentIntegrationTest {
     //test if data sent from the http request is mapped correctly to the java class
     @Test
     void whenAddValid_thenReturns200() throws Exception{
-        Student student = new Student(20170349,"Youssef Mohamed",4,2.8);
+        Student student = new Student(20170349,"Youssef Mohamed", "s", "s",4,2.8);
         this.mockMvc.perform(post("/student/add")
                 //checks for correct request content type
                 .contentType("application/json")
@@ -115,7 +115,7 @@ class StudentIntegrationTest {
     // test if data sent from http request to add student to the database has any null values
     @Test
     void whenAddHasNullStudent_thenReturns400() throws Exception {
-        Student student = new Student(null,null,null,null);
+        Student student = new Student(null,null,null, null, null ,null);
 
         this.mockMvc.perform(post("/student/add")
                 .contentType("application/json")
