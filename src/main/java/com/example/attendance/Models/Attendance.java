@@ -35,7 +35,6 @@ public class Attendance {
         this.absent = absent;
     }
 
-    private boolean absent;
     public Attendance() {
     }
 
