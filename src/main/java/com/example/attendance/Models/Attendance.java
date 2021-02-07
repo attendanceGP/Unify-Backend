@@ -27,6 +27,8 @@ public class Attendance {
     @Temporal(TemporalType.DATE)
     private Date date;
 
+    private boolean absent;
+
     public boolean isAbsent() {
         return absent;
     }
