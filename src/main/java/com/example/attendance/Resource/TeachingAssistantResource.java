@@ -1,6 +1,7 @@
 package com.example.attendance.Resource;
 
 import com.example.attendance.Models.Attendance;
+import com.example.attendance.Models.TeachingAssistant;
 import com.example.attendance.Service.CourseService;
 import com.example.attendance.Service.TeachingAssistantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,12 @@ import java.util.Date;
 public class TeachingAssistantResource {
     @Autowired
     private TeachingAssistantService teachingAssistantService;
+
+//    @PostMapping( path = "/addTA") public @ResponseBody String addTA(){
+//        TeachingAssistant Ta1 = new TeachingAssistant(20192000, "first TA", "TA1", "TA1");
+//        teachingAssistantService.addTeachingAssistant(Ta1);
+//        return "done";
+//    }
 
     @PostMapping( path = "postattendance")
     public @ResponseBody String postAttendance(@RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,

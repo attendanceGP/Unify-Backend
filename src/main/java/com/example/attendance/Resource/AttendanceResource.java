@@ -7,6 +7,7 @@ import com.example.attendance.Service.AttendanceService;
 import com.example.attendance.Service.CourseService;
 import com.example.attendance.Service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,11 +27,11 @@ public class AttendanceResource {
 
     @Autowired
     private AttendanceService attendanceService;
+
     //this function takes the student id and the course code as parameters
     //and return the attendance dates that the student attended this course
     @GetMapping(value = "/attendanceDates")
-    @ResponseBody
-    public String GetAttendanceDates(@RequestParam Integer studentId, @RequestParam String courseCode){
+    @ResponseBody public String GetAttendanceDates(@RequestParam Integer studentId, @RequestParam String courseCode){
         Optional<Student>optionalStudent = studentService.findById(studentId);
         if (optionalStudent.isEmpty()) return "Error: student does not exist";
         Optional<Course>optionalCourse = courseService.findById(courseCode);
@@ -44,4 +45,12 @@ public class AttendanceResource {
         }
         return attendancesDates.toString();
     }
+
+    // this function shows the TA all students in a certain course, group, and date
+    // to allow him confirming on total attended number, delete, or add students to attendance.
+    @GetMapping(path = "/getStudentsAttendanceList")
+    public @ResponseBody List<Student> getStudentsList(@RequestParam String courseID, @RequestParam String group, @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date){
+        return attendanceService.getStudentsList(courseID, group, date);
+    }
+
 }

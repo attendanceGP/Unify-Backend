@@ -33,7 +33,7 @@ public class TeachingAssistantService {
         return teachingAssistantRepository.findById(id);
     }
 
-//    public void addTeachingAssistant(TeachingAssistant TA, Student student, Course course){
+//    public void addTeachingAssistant(TeachingAssistant TA){
 //        teachingAssistantRepository.save(TA);
 //        //Date date = new Date(2020,10,20);
 //        //Attendance attendance = new Attendance(student, course, "G1", date);
