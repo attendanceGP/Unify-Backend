@@ -46,6 +46,11 @@ public class TeachingAssistantService {
         }
         return associatedIds;
     }
+
+    //when posting attendance, for the TA if the absent boolean is false that means the TA is taking attendance
+    //and students can attend, otherwise if false no student can attend the course as the attendance is closed
+    //for students if absent is true this means they are absent if false this means they have attended said
+    //course in said date in said group
     public void postAttendance(Date date, String userGroup, String courseId, Integer userId){
         TeachingAssistant ta = teachingAssistantRepository.findById(userId).get();
 
