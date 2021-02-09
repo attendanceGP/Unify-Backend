@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.Date;
 import java.util.List;
 
-public interface StudentCourseRepository extends CrudRepository<UserCourse, Integer> {
+public interface UserCourseRepository extends CrudRepository<UserCourse, Integer> {
 
     //a query to get the userCourse record of a student that correspond to his specific id and the course he is registered in
     //will be useful in getting absences to show for certain courses and we may make another query in another sprint
@@ -19,4 +19,7 @@ public interface StudentCourseRepository extends CrudRepository<UserCourse, Inte
 
     @Query(value = "SELECT * FROM user_course WHERE fk_course_code = :courseId and fk_user_id = :userId", nativeQuery = true)
     List<UserCourse> findByStudentIDAndCourseID(@Param("userId") Integer userId, @Param("courseId") String courseId);
+
+    @Query(value = "SELECT * FROM user_course WHERE fk_course_code = :courseId and user_group = :userGroup", nativeQuery = true)
+    List<UserCourse> findByCourseIdAndUserGroup(@Param("courseId") String courseId, @Param("userGroup") String userGroup);
 }

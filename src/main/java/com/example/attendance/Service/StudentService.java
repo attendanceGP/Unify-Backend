@@ -4,7 +4,7 @@ import com.example.attendance.Containers.StudentCourseContainer;
 import com.example.attendance.Models.*;
 import com.example.attendance.Repository.AttendanceRepository;
 import com.example.attendance.Repository.CourseRepository;
-import com.example.attendance.Repository.StudentCourseRepository;
+import com.example.attendance.Repository.UserCourseRepository;
 import com.example.attendance.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class StudentService {
     private CourseRepository courseRepository;
 
     @Autowired
-    private StudentCourseRepository studentCourseRepository;
+    private UserCourseRepository userCourseRepository;
 
     private final RestTemplate restTemplate;    // to perform http requests to get students from uni
 
@@ -76,7 +76,7 @@ public class StudentService {
 
         List<Attendance> entries = attendanceRepository.findByCourseAndUserGroupAndDate(date, userGroup, courseId);
 
-        List<UserCourse> userCoursesFound = studentCourseRepository.findUserCourseByCourseAndAndUser(userId,courseId);
+        List<UserCourse> userCoursesFound = userCourseRepository.findUserCourseByCourseAndAndUser(userId,courseId);
 
         //we check whether the group the student is trying to enter into is the group
         //he is assigned to for that specific course from the userCourse table
@@ -92,7 +92,7 @@ public class StudentService {
 
             Course course = courseRepository.findById(courseId).get();
 
-            Attendance attendance = new Attendance(student, course, userGroup, date);
+            Attendance attendance = new Attendance(student, course, userGroup, date, true);
 
             attendanceRepository.save(attendance);
 

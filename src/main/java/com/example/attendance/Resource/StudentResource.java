@@ -2,13 +2,10 @@ package com.example.attendance.Resource;
 
 import com.example.attendance.Containers.StudentCourseContainer;
 import com.example.attendance.Models.*;
-import com.example.attendance.Repository.StudentCourseRepository;
 import com.example.attendance.Repository.StudentRepository;
-import com.example.attendance.Repository.TeachingAssistantRepository;
 import com.example.attendance.Service.CourseService;
 import com.example.attendance.Service.StudentCourseService;
 import com.example.attendance.Service.StudentService;
-import com.example.attendance.Service.TeachingAssistantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;

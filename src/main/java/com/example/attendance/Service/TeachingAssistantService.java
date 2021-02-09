@@ -3,11 +3,9 @@ package com.example.attendance.Service;
 import com.example.attendance.Models.*;
 import com.example.attendance.Repository.AttendanceRepository;
 import com.example.attendance.Repository.CourseRepository;
-import com.example.attendance.Repository.StudentCourseRepository;
+import com.example.attendance.Repository.UserCourseRepository;
 import com.example.attendance.Repository.TeachingAssistantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,7 +25,7 @@ public class TeachingAssistantService {
     private AttendanceRepository attendanceRepository;
 
     @Autowired
-    private StudentCourseRepository studentCourseRepository;
+    private UserCourseRepository userCourseRepository;
 
     public Optional<TeachingAssistant> findTAById(Integer id){
         return teachingAssistantRepository.findById(id);
@@ -40,21 +38,55 @@ public class TeachingAssistantService {
 //        //attendanceRepository.save(attendance);
 //    }
 
+    public List<User> getRegisteredUserIds(String userGroup, String courseId){
+        List<UserCourse> UCs = userCourseRepository.findByCourseIdAndUserGroup(courseId,userGroup);
+        List<User> associatedIds = new ArrayList<User>();
+        for(int i=0; i<UCs.size(); i++){
+            associatedIds.add(UCs.get(i).getUser());
+        }
+        return associatedIds;
+    }
     public void postAttendance(Date date, String userGroup, String courseId, Integer userId){
-        TeachingAssistant ta1 = new TeachingAssistant(userId, "sarah", "s", "S");
-        teachingAssistantRepository.save(ta1);
         TeachingAssistant ta = teachingAssistantRepository.findById(userId).get();
 
         Course course = courseRepository.findById(courseId).get();
 
-        Attendance attendance = new Attendance(ta, course, userGroup, date);
+        String[] groups = userGroup.split(" ");
 
-        attendanceRepository.save(attendance);
+        if(groups.length == 1) {
+            Attendance attendance = new Attendance(ta, course, userGroup, date, false);
+
+            attendanceRepository.save(attendance);
+
+            List<User> attendingStudentIds = getRegisteredUserIds(userGroup, courseId);
+
+            for (int i = 0; i < attendingStudentIds.size(); i++) {
+                Attendance studentAttendance = new Attendance(attendingStudentIds.get(i), course, userGroup, date, true);
+
+                attendanceRepository.save(studentAttendance);
+            }
+        }
+        
+        else{
+            for(int i=0;i<groups.length; i++){
+                Attendance multiAttendance = new Attendance(ta, course, groups[i], date, false);
+
+                attendanceRepository.save(multiAttendance);
+
+                List<User> attendingStudentIds = getRegisteredUserIds(groups[i], courseId);
+
+                for (int j = 0; j < attendingStudentIds.size(); j++) {
+                    Attendance studentAttendance = new Attendance(attendingStudentIds.get(j), course, groups[i], date, true);
+
+                    attendanceRepository.save(studentAttendance);
+                }
+            }
+        }
     }
 
     public String getAbsence(Integer StudentID, String CourseID){
 
-        List<UserCourse> StudentCourseGroup = studentCourseRepository.findByStudentIDAndCourseID(StudentID, CourseID);
+        List<UserCourse> StudentCourseGroup = userCourseRepository.findByStudentIDAndCourseID(StudentID, CourseID);
         if (StudentCourseGroup.isEmpty()){
             return "error: wrong data entered";
         }

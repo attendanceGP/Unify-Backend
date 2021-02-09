@@ -42,19 +42,21 @@ public class Attendance {
     public Attendance() {
     }
 
-    public Attendance(User user, Course course, String userGroup, Date date) {
+    public Attendance(User user, Course course, String userGroup, Date date, boolean absent) {
         this.user = user;
         this.course = course;
         this.userGroup = userGroup;
         this.date = date;
+        this.absent = absent;
     }
 
-    public Attendance(Long id, User user, Course course, String userGroup, Date date) {
+    public Attendance(Long id, User user, Course course, String userGroup, Date date, boolean absent) {
         this.id = id;
         this.user = user;
         this.course = course;
         this.userGroup = userGroup;
         this.date = date;
+        this.absent = absent;
     }
 
     public Long getId() {
