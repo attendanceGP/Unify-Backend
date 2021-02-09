@@ -27,7 +27,7 @@ public class AttendanceService {
 
     // TA will be able to see all Students List in this course in a certain date.
     // this list will be used to enable TA to delete, add student for attendance.
-    public List<Student> getStudentsList(String courseID, String Group, Date date){
-        return studentRepository.findStudentByCourseAndUserGroupAndDate(date, Group, courseID);
+    public List<Attendance> getStudentsList(String courseID, String Group, Date date){
+        return attendanceRepository.findStudentByCourseAndUserGroupAndDate(date, Group, courseID);
     }
 }
