@@ -111,4 +111,8 @@ public class TeachingAssistantService {
         }
         return stdDates.toString();
     }
+
+    public List<String> getRegisteredCourses(Integer userID){
+        return userCourseRepository.findCourseCodeById(userID);
+    }
 }

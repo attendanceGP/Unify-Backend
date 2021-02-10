@@ -22,4 +22,7 @@ public interface UserCourseRepository extends CrudRepository<UserCourse, Integer
 
     @Query(value = "SELECT * FROM user_course WHERE fk_course_code = :courseId and user_group = :userGroup", nativeQuery = true)
     List<UserCourse> findByCourseIdAndUserGroup(@Param("courseId") String courseId, @Param("userGroup") String userGroup);
+
+    @Query(value = "SELECT fk_course_code FROM user_course WHERE fk_user_id = :userId", nativeQuery = true)
+    List<String> findCourseCodeById(@Param("userId") Integer userId);
 }

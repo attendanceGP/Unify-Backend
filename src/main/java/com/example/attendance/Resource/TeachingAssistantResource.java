@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping(path = "/ta")
@@ -24,6 +25,13 @@ public class TeachingAssistantResource {
         teachingAssistantService.postAttendance(date, userGroup, courseId, userId);
 
         return date.toString();
+    }
+
+    @GetMapping( path = "getTaughtCourses")
+    public @ResponseBody
+    List<String> postAttendance(@RequestParam Integer userId){
+
+        return teachingAssistantService.getRegisteredCourses(userId);
     }
 
     @GetMapping( path = "getAbsence")
