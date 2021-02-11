@@ -30,4 +30,25 @@ public class AttendanceService {
     public List<Attendance> getStudentsList(String courseID, String Group, Date date){
         return attendanceRepository.findStudentByCourseAndUserGroupAndDate(date, Group, courseID);
     }
+
+    public String setAbsent(String courseID, String Group, Date date, Integer studentID){
+        List<Attendance> student = attendanceRepository.findStudentByCourseAndUserGroupAndDateandID(date, Group, courseID, studentID);
+        if(student.isEmpty()) return "No such ID";
+        if(student.get(0).getAbsent()){
+            return "Student is already absent";
+        }
+        attendanceRepository.UpdateStudentAbsence(date, Group, courseID, studentID, true);
+        return "Done";
+    }
+
+    public String setPresent(String courseID, String Group, Date date, Integer studentID){
+        List<Attendance> student = attendanceRepository.findStudentByCourseAndUserGroupAndDateandID(date, Group, courseID, studentID);
+        if(student.isEmpty()) return "No such ID";
+        if(!student.get(0).getAbsent()){
+            return "Student is already present";
+        }
+        attendanceRepository.UpdateStudentAbsence(date, Group, courseID, studentID, false);
+        return "Done";
+    }
+
 }

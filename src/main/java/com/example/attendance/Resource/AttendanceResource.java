@@ -49,8 +49,18 @@ public class AttendanceResource {
     // this function shows the TA all students in a certain course, group, and date
     // to allow him confirming on total attended number, delete, or add students to attendance.
     @GetMapping(path = "/getStudentsAttendanceList")
-    public @ResponseBody List<Attendance> getStudentsList(@RequestParam String courseID, @RequestParam String group, @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date){
+    public @ResponseBody List<Attendance> getStudentsList(@RequestParam("courseID") String courseID, @RequestParam("group") String group, @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date){
         return attendanceService.getStudentsList(courseID, group, date);
+    }
+
+    @PostMapping(path = "/SetStudentAbsent")
+    public @ResponseBody String SetStudentAbsent(@RequestParam("courseID") String courseID, @RequestParam("group") String group, @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,@RequestParam("studentID") Integer studentID){
+        return attendanceService.setAbsent(courseID, group, date, studentID);
+    }
+
+    @PostMapping(path = "/SetStudentPresent")
+    public @ResponseBody String SetStudentPresent(@RequestParam("courseID") String courseID, @RequestParam("group") String group, @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,@RequestParam("studentID") Integer studentID){
+        return attendanceService.setPresent(courseID, group, date, studentID);
     }
 
 }
