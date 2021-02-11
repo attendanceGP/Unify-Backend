@@ -28,9 +28,7 @@ public class TeachingAssistantResource {
     }
 
     @GetMapping( path = "getTaughtCourses")
-    public @ResponseBody
-    List<String> postAttendance(@RequestParam Integer userId){
-
+    public @ResponseBody List<String> postAttendance(@RequestParam Integer userId){
         return teachingAssistantService.getRegisteredCourses(userId);
     }
 
