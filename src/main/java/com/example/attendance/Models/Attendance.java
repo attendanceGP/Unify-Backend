@@ -47,6 +47,14 @@ public class Attendance {
         this.date = date;
     }
 
+    public Attendance(User user, Course course, String userGroup, Date date, boolean absent) {
+        this.user = user;
+        this.course = course;
+        this.userGroup = userGroup;
+        this.date = date;
+        this.absent = absent;
+    }
+
     public Attendance(Long id, User user, Course course, String userGroup, Date date) {
         this.id = id;
         this.user = user;
