@@ -166,11 +166,12 @@ public class StudentResource {
             User user = attendances.get(i).getUser();
             int id = user.getId();
             if (id == studentID){
-                return "{\"error\":Attendance already recorded}";
+
+                return "error:Attendance already recorded";
             }
         }
         if (optionalTa == null){
-            return "{\"error\": there is no section/lab attendance available}";
+            return "error: there is no section/lab attendance available";
         }
         TeachingAssistant ta = optionalTa.get();
         Attendance record = attendances.get(index);
@@ -180,7 +181,7 @@ public class StudentResource {
         else {
             Attendance toBeAdded = new Attendance(student,course,userGroup,date,false);
             attendanceService.addAttendance(toBeAdded);
-            return "{\"error\":attendance recorded successfully}";
+            return "error:attendance recorded successfully";
         }
     }
 }
