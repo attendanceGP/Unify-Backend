@@ -160,19 +160,13 @@ public class StudentResource {
                 int id = user.getId();
                 optionalTa = teachingAssistantService.findTAById(id);
                 if (!optionalTa.isEmpty()) {
-                    index = j;
-                    break;
-                }
-            }
-                if (optionalTa == null){
-                    return null;
-                }
-                else {
                     JSONObject jsonObject = attendanceService.getJsonFromAttendance(attendances.get(index));
                     return jsonObject.toString();
+
                 }
             }
-        return "no courses available";
+            }
+        return attendanceService.getJsonFromAttendance(new Attendance()).toString();
     }
         /*for (int i = 0; i <attendances.size() ; i++) {
             User user = attendances.get(i).getUser();

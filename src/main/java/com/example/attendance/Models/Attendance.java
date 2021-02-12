@@ -62,7 +62,6 @@ public class Attendance {
         this.userGroup = userGroup;
         this.date = date;
     }
-
     public Long getId() {
         return id;
     }
