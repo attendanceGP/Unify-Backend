@@ -1,11 +1,10 @@
 package com.example.attendance.Service;
 
-import com.example.attendance.Models.Attendance;
-import com.example.attendance.Models.Course;
-import com.example.attendance.Models.Student;
-import com.example.attendance.Models.User;
+import com.example.attendance.Models.*;
 import com.example.attendance.Repository.AttendanceRepository;
 import com.example.attendance.Repository.StudentRepository;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +26,25 @@ public class AttendanceService {
 
     // TA will be able to see all Students List in this course in a certain date.
     // this list will be used to enable TA to delete, add student for attendance.
-    public List<Attendance> getStudentsList(String courseID, String Group, Date date){
-        return attendanceRepository.findStudentByCourseAndUserGroupAndDate(date, Group, courseID);
+    public JSONArray getStudentsList(String courseID, String Group, Date date){
+        return getJsonFromAttendance(attendanceRepository.findStudentByCourseAndUserGroupAndDate(date, Group, courseID));
+    }
+
+    private JSONArray getJsonFromAttendance(List<Attendance> attendanceList){
+        JSONArray jsonArray = new JSONArray();
+
+        for(Attendance i: attendanceList){
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("userId", i.getUser().getId());
+            jsonObject.put("courseCode", i.getCourse().getCourseCode());
+            jsonObject.put("name", i.getUser().getName());
+            jsonObject.put("userGroup", i.getUserGroup());
+
+            jsonArray.put(jsonObject);
+        }
+
+        return jsonArray;
     }
 
     public String setAbsent(String courseID, String Group, Date date, Integer studentID){

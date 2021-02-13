@@ -6,6 +6,7 @@ import com.example.attendance.Models.Student;
 import com.example.attendance.Service.AttendanceService;
 import com.example.attendance.Service.CourseService;
 import com.example.attendance.Service.StudentService;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -49,8 +50,9 @@ public class AttendanceResource {
     // this function shows the TA all students in a certain course, group, and date
     // to allow him confirming on total attended number, delete, or add students to attendance.
     @GetMapping(path = "/getStudentsAttendanceList")
-    public @ResponseBody List<Attendance> getStudentsList(@RequestParam("courseID") String courseID, @RequestParam("group") String group, @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date){
-        return attendanceService.getStudentsList(courseID, group, date);
+    public @ResponseBody
+    String getStudentsList(@RequestParam("courseID") String courseID, @RequestParam("group") String group, @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date){
+        return attendanceService.getStudentsList(courseID, group, date).toString();
     }
 
     @PostMapping(path = "/SetStudentAbsent")
