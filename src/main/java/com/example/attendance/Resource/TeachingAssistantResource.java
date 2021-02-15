@@ -19,12 +19,12 @@ public class TeachingAssistantResource {
     private TeachingAssistantService teachingAssistantService;
 
     @PostMapping( path = "postattendance")
-    public @ResponseBody String postAttendance(@RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,
+    public @ResponseBody void postAttendance(@RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,
                           @RequestParam String userGroup, @RequestParam String courseId, @RequestParam Integer userId){
 
         teachingAssistantService.postAttendance(date, userGroup, courseId, userId);
 
-        return date.toString();
+        //return date.toString();
     }
 
     @GetMapping( path = "getTaughtCourses")
