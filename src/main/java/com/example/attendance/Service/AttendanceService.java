@@ -67,4 +67,30 @@ public class AttendanceService {
         return "Done";
     }
 
+    public JSONObject getStudentAttendance(String courseID, String Group, Date date, Integer studentID){
+        List<Attendance> student = attendanceRepository.findStudentByCourseAndUserGroupAndDateandID(date, Group, courseID, studentID);
+        Attendance i = student.get(0);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("userId", i.getUser().getId());
+        jsonObject.put("courseCode", i.getCourse().getCourseCode());
+        jsonObject.put("name", i.getUser().getName());
+        jsonObject.put("userGroup", i.getUserGroup());
+        return jsonObject;
+    }
+
+//    public String setStudentsAbsence(String courseID, String Group, Date date, Integer studentID){
+//        List<Attendance> student = attendanceRepository.findStudentByCourseAndUserGroupAndDateandID(date, Group, courseID, studentID);
+//        if(student.isEmpty()) return "{\"errorCode\":2}"; //user not found
+//        Attendance i = student.get(0);
+//        if(i.getAbsent()) return "{\"errorCode\":4}"; //user is already absent
+//        attendanceRepository.UpdateStudentAbsence(date, Group, courseID, studentID, true);
+//
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("userId", i.getUser().getId());
+//        jsonObject.put("courseCode", i.getCourse().getCourseCode());
+//        jsonObject.put("name", i.getUser().getName());
+//        jsonObject.put("userGroup", i.getUserGroup());
+//        return jsonObject.toString();
+//    }
+
 }

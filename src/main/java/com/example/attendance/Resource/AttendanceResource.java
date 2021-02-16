@@ -51,18 +51,33 @@ public class AttendanceResource {
     // to allow him confirming on total attended number, delete, or add students to attendance.
     @GetMapping(path = "/getStudentsAttendanceList")
     public @ResponseBody
-    String getStudentsList(@RequestParam("courseID") String courseID, @RequestParam("group") String group, @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date){
+    String getStudentsList(@RequestParam("courseID") String courseID, @RequestParam("group") String group,
+                           @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date){
         return attendanceService.getStudentsList(courseID, group, date).toString();
     }
 
     @PostMapping(path = "/SetStudentAbsent")
-    public @ResponseBody String SetStudentAbsent(@RequestParam("courseID") String courseID, @RequestParam("group") String group, @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,@RequestParam("studentID") Integer studentID){
+    public @ResponseBody
+    String SetStudentAbsent(@RequestParam("courseID") String courseID, @RequestParam("group") String group,
+                            @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,
+                            @RequestParam("studentID") Integer studentID){
         return attendanceService.setAbsent(courseID, group, date, studentID);
     }
 
     @PostMapping(path = "/SetStudentPresent")
-    public @ResponseBody String SetStudentPresent(@RequestParam("courseID") String courseID, @RequestParam("group") String group, @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,@RequestParam("studentID") Integer studentID){
+    public @ResponseBody
+    String SetStudentPresent(@RequestParam("courseID") String courseID, @RequestParam("group") String group,
+                             @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,
+                             @RequestParam("studentID") Integer studentID){
         return attendanceService.setPresent(courseID, group, date, studentID);
+    }
+
+    @GetMapping(path = "/getStudent")
+    public @ResponseBody
+    String getStudent(@RequestParam("courseID") String courseID, @RequestParam("group") String group,
+                             @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,
+                             @RequestParam("studentID") Integer studentID){
+        return attendanceService.getStudentAttendance(courseID, group, date, studentID).toString();
     }
 
 }
