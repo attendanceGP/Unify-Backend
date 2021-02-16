@@ -18,7 +18,7 @@ public class StudentCourseService {
         userCourseRepository.save(userCourse);
     }
     public List<UserCourse> getUserCourses(User user){
-        return studentCourseRepository.findUserCourseByUser(user);
+        return userCourseRepository.findUserCourseByUser(user);
     }
-    public UserCourse getUserCourse(User user, Course course){return studentCourseRepository.findUserCourseByUserAndCourse(user,course);}
+    public UserCourse getUserCourse(User user, Course course){return userCourseRepository.findUserCourseByUserAndCourse(user,course);}
 }
