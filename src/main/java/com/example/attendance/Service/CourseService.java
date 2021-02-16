@@ -19,4 +19,5 @@ public class CourseService {
     public Optional<Course> findById(String id){
         return courseRepository.findById(id);
     }
+    public Course findByCourseName(String courseName){return courseRepository.getCourseByCourseName(courseName);}
 }

@@ -26,4 +26,6 @@ public interface AttendanceRepository extends CrudRepository<Attendance, Long> {
 
 
     List<Attendance> findAttendanceByUserAndCourse(Student student, Course course);
+    List<Attendance> findAttendanceByCourseAndUserGroupAndDateAndAbsent(Course course ,String userGroup, Date date,boolean absent);
+
 }

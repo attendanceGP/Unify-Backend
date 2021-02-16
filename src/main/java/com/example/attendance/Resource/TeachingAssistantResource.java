@@ -32,7 +32,7 @@ public class TeachingAssistantResource {
         return teachingAssistantService.getRegisteredCourses(userId);
     }
 
-    @GetMapping( path = "getAbsence")
+    @GetMapping( path = "/getAbsence")
     public @ResponseBody
     String getAbsence(@RequestParam Integer studentID, @RequestParam String courseID){
         return teachingAssistantService.getAbsence(studentID,courseID);

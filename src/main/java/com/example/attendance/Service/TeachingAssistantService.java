@@ -114,5 +114,6 @@ public class TeachingAssistantService {
 
     public List<String> getRegisteredCourses(Integer userID){
         return userCourseRepository.findCourseCodeById(userID);
-    }
+        }
+
 }

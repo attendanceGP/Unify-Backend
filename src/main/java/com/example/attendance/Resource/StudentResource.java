@@ -6,6 +6,8 @@ import com.example.attendance.Repository.StudentRepository;
 import com.example.attendance.Service.CourseService;
 import com.example.attendance.Service.StudentCourseService;
 import com.example.attendance.Service.StudentService;
+import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -30,6 +33,13 @@ public class StudentResource {
     @Autowired
     private StudentRepository studentRepository;
 
+
+    @Autowired
+    private AttendanceService attendanceService;
+
+
+
+/*
     @PostMapping( value = "/add", consumes = "application/json")
     public @ResponseBody void add(@Valid @RequestBody Student student){
         studentService.addStudent(student);
@@ -75,15 +85,16 @@ public class StudentResource {
 
         System.out.println("done");
     }
+*/
 
-    @PostMapping(path = "login")
+/*    @PostMapping(path = "login")
     public @ResponseBody String login(@RequestParam String username, @RequestParam String password){
-        /*
+        *//*
         1- we contact the uni server with the username and password
         2- if user is already logged in, we inform the user
         3- if the user is not logged in, we add the courses of the user to UserCourse
         4- if the user is valid we return a json with the user info requeired by the app
-         */
+         *//*
         StudentCourseContainer studentCourseContainer = studentService.getStudentCourses(username, password);
 
         if(studentCourseContainer == null) return "An error has occurred.";
@@ -114,12 +125,59 @@ public class StudentResource {
         }
 
         return "Success.";
-    }
+    }*/
 
-    @PostMapping( path = "postattendance")
+/*    @PostMapping( path = "postattendance")
     public @ResponseBody String postAttendance(@RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,
                                                @RequestParam String userGroup, @RequestParam String courseId, @RequestParam Integer userId){
         return studentService.postAttendance(date, userGroup, courseId, userId);
+    }*/
+
+    @GetMapping(value = "/getStudentCourses")
+    public @ResponseBody String[]getStudentCourses(@RequestParam Integer studentID){
+    Optional<Student> student = studentService.findById(studentID);
+    if (student.isEmpty()) return new String[0];
+    List<UserCourse> studentCourses = studentCourseService.getUserCourses(student.get());
+    if (studentCourses.isEmpty()) return new String[0];
+    String [] courses = new String[studentCourses.size()];
+        for (int i = 0; i <studentCourses.size() ; i++) {
+            courses[i] = studentCourses.get(i).getCourse().getCourseName();
+        }
+        return courses;
     }
 
+                if (!optionalTa.isEmpty()) {
+                    JSONObject jsonObject = attendanceService.getJsonFromAttendance(attendances.get(index));
+                    return jsonObject.toString();
+
+                }
+            }
+            }
+        return attendanceService.getJsonFromAttendance(new Attendance()).toString();
+    }
+
+    @GetMapping(value = "/attend")
+    public @ResponseBody String attend(@RequestParam Integer studentID, @RequestParam String courseName ,
+                                       @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,@RequestParam long TAAttendanceID){
+        Attendance attendance = attendanceService.getByID(TAAttendanceID).get();
+        if (attendance.isAbsent()){
+            return "the recording process is over";
+        }
+        Student student = studentService.findById(studentID).get();
+        Course course = courseService.findByCourseName(courseName);
+        UserCourse userCourse = studentCourseService.getUserCourse(student,course);
+        String userGroup=userCourse.getUserGroup();
+        List<Attendance> attendancesAbsent = attendanceService.findAttendanceByCourseAndUserGroupAndDateAndAbsent(course,userGroup,date,true);
+        long attendanceID=0;
+        for (int i = 0; i <attendancesAbsent.size() ; i++) {
+            User user = attendancesAbsent.get(i).getUser();
+            int id = user.getId();
+            if (id == studentID){
+                attendanceID=attendancesAbsent.get(i).getId();
+            }
+        }
+        Attendance toBeAdded = new Attendance(attendanceID,student,course,userGroup,date,false);
+        attendanceService.addAttendance(toBeAdded);
+        return "attendance recorded successfully";
+    }
 }
