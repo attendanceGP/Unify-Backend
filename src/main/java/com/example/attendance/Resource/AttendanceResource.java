@@ -56,28 +56,12 @@ public class AttendanceResource {
         return attendanceService.getStudentsList(courseID, group, date).toString();
     }
 
-    @PostMapping(path = "/SetStudentAbsent")
+    @GetMapping(path = "/setStudentAbsence")
     public @ResponseBody
-    String SetStudentAbsent(@RequestParam("courseID") String courseID, @RequestParam("group") String group,
-                            @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,
-                            @RequestParam("studentID") Integer studentID){
-        return attendanceService.setAbsent(courseID, group, date, studentID);
-    }
-
-    @PostMapping(path = "/SetStudentPresent")
-    public @ResponseBody
-    String SetStudentPresent(@RequestParam("courseID") String courseID, @RequestParam("group") String group,
+    String setAbsence(@RequestParam("courseID") String courseID, @RequestParam("group") String group,
                              @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,
-                             @RequestParam("studentID") Integer studentID){
-        return attendanceService.setPresent(courseID, group, date, studentID);
-    }
-
-    @GetMapping(path = "/getStudent")
-    public @ResponseBody
-    String getStudent(@RequestParam("courseID") String courseID, @RequestParam("group") String group,
-                             @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,
-                             @RequestParam("studentID") Integer studentID){
-        return attendanceService.getStudentAttendance(courseID, group, date, studentID).toString();
+                             @RequestParam("studentID") Integer studentID, @RequestParam("absent") boolean absent){
+        return attendanceService.setStudentsAbsence(courseID, group, date, studentID, absent);
     }
 
 }
