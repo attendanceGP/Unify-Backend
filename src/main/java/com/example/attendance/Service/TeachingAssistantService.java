@@ -92,6 +92,7 @@ public class TeachingAssistantService {
     public String getAbsence(Integer StudentID, String CourseID){
 
         List<UserCourse> StudentCourseGroup = userCourseRepository.findByStudentIDAndCourseID(StudentID, CourseID);
+
         if (StudentCourseGroup.isEmpty()){
             return "error: wrong data entered";
         }

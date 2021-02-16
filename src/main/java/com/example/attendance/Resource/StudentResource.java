@@ -2,10 +2,12 @@ package com.example.attendance.Resource;
 
 import com.example.attendance.Containers.StudentCourseContainer;
 import com.example.attendance.Models.*;
+
 import com.example.attendance.Repository.StudentRepository;
 import com.example.attendance.Service.CourseService;
 import com.example.attendance.Service.StudentCourseService;
 import com.example.attendance.Service.StudentService;
+import com.example.attendance.Service.*;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,8 @@ public class StudentResource {
     @Autowired
     private AttendanceService attendanceService;
 
+    @Autowired
+    private TeachingAssistantService teachingAssistantService;
 
 
 /*
@@ -146,6 +150,23 @@ public class StudentResource {
         return courses;
     }
 
+    @GetMapping(value = "/checkAttendance")
+    public @ResponseBody String checkAttendance(@RequestParam Integer studentID, @RequestParam String[] courses ,
+                                       @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date){
+        Student student = studentService.findById(studentID).get();
+        List<Attendance>attendances=null;
+        for (int i = 0; i <courses.length ; i++) {
+            Course course = courseService.findByCourseName(courses[i]);
+            UserCourse userCourse = studentCourseService.getUserCourse(student,course);
+            String userGroup=userCourse.getUserGroup();
+            attendances = attendanceService.findAttendanceByCourseAndUserGroupAndDateAndAbsent(course,userGroup,date,false);
+            Optional<TeachingAssistant> optionalTa = null;
+            int index=0;
+            for (int j = 0; j < attendances.size(); j++) {
+
+                User user = attendances.get(j).getUser();
+                int id = user.getId();
+                optionalTa = teachingAssistantService.findTAById(id);
                 if (!optionalTa.isEmpty()) {
                     JSONObject jsonObject = attendanceService.getJsonFromAttendance(attendances.get(index));
                     return jsonObject.toString();
