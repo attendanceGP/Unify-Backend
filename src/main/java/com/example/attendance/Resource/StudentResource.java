@@ -187,7 +187,11 @@ public class StudentResource {
     //}
     @GetMapping(value = "/attend")
     public @ResponseBody String attend(@RequestParam Integer studentID, @RequestParam String courseName ,
-                                       @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date){
+                                       @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,@RequestParam long TAAttendanceID){
+        Attendance attendance = attendanceService.getByID(TAAttendanceID).get();
+        if (attendance.isAbsent()){
+            return "the recording process is over";
+        }
         Student student = studentService.findById(studentID).get();
         Course course = courseService.findByCourseName(courseName);
         UserCourse userCourse = studentCourseService.getUserCourse(student,course);

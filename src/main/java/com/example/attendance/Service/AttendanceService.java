@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AttendanceService {
@@ -21,7 +22,7 @@ public class AttendanceService {
         return attendanceRepository.findAttendanceByCourseAndUserGroupAndDateAndAbsent(course,userGroup,date,absent);
     }
     public void addAttendance(Attendance attendance){attendanceRepository.save(attendance);}
-
+    public Optional<Attendance> getByID(long ID){return attendanceRepository.findById(ID);}
 
     public JSONObject getJsonFromAttendance(Attendance attendance){
         JSONObject json = new JSONObject();
