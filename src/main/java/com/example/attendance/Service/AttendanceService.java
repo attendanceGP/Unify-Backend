@@ -27,7 +27,17 @@ public class AttendanceService {
     // TA will be able to see all Students List in this course in a certain date.
     // this list will be used to enable TA to delete, add student for attendance.
     public JSONArray getStudentsList(String courseID, String Group, Date date){
-        return getJsonFromAttendance(attendanceRepository.findStudentByCourseAndUserGroupAndDate(date, Group, courseID));
+        String[] groups = Group.split(" ");
+        List<Object> returnArray = new ArrayList<>();
+        for(String g: groups){
+            List<Attendance> attendanceList = attendanceRepository.findStudentByCourseAndUserGroupAndDate(date, g, courseID);
+            if(!attendanceList.isEmpty()) {
+                returnArray.addAll(getJsonFromAttendance(attendanceList).toList());
+                System.out.println(returnArray.size());
+            }
+        }
+        System.out.println(returnArray.size());
+        return new JSONArray(returnArray);
     }
 
     private JSONArray getJsonFromAttendance(List<Attendance> attendanceList){
@@ -48,7 +58,12 @@ public class AttendanceService {
     }
 
     public String setStudentsAbsence(String courseID, String Group, Date date, Integer studentID, boolean absence){
-        List<Attendance> student = attendanceRepository.findStudentByCourseAndUserGroupAndDateandID(date, Group, courseID, studentID);
+        String[] groups = Group.split(" ");
+        List<Attendance> student = new ArrayList<>();
+        for(String g: groups){
+            student = attendanceRepository.findStudentByCourseAndUserGroupAndDateandID(date, g, courseID, studentID);
+            if(!student.isEmpty()) break;
+        }
         if(student.isEmpty()) return "{\"error_code\":2}"; //user not found
         Attendance i = student.get(0);
         if(i.getAbsent() == absence) return "{\"error_code\":4}"; //user is already absent
