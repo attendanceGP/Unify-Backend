@@ -32,7 +32,7 @@ public class AttendanceService {
     public void addAttendance(Attendance attendance){attendanceRepository.save(attendance);}
     public Optional<Attendance> getByID(long ID){return attendanceRepository.findById(ID);}
 
-/*    public JSONObject getJsonFromAttendance(Attendance attendance) {
+    public JSONObject getJsonFromAttendance(Attendance attendance) {
         JSONObject json = new JSONObject();
 
         json.put("id", attendance.getId());
@@ -43,7 +43,8 @@ public class AttendanceService {
         json.put("absent", attendance.isAbsent());
 
         return json;
-    }*/
+    }
+
     // TA will be able to see all Students List in this course in a certain date.
     // this list will be used to enable TA to delete, add student for attendance.
     public JSONArray getStudentsList(String courseID, String Group, Date date){
@@ -51,6 +52,7 @@ public class AttendanceService {
         List<Object> returnArray = new ArrayList<>();
         for(String g: groups){
             List<Attendance> attendanceList = attendanceRepository.findStudentByCourseAndUserGroupAndDate(date, g, courseID);
+            System.out.println(g);
             if(!attendanceList.isEmpty()) {
                 returnArray.addAll(getJsonFromAttendance(attendanceList).toList());
                 System.out.println(returnArray.size());
@@ -66,7 +68,7 @@ public class AttendanceService {
         for(Attendance i: attendanceList){
             JSONObject jsonObject = new JSONObject();
 
-            jsonObject.put("userId", i.getUser().getId());
+            jsonObject.put("userID", i.getUser().getId());
             jsonObject.put("courseCode", i.getCourse().getCourseCode());
             jsonObject.put("name", i.getUser().getName());
             jsonObject.put("userGroup", i.getUserGroup());
@@ -91,7 +93,7 @@ public class AttendanceService {
         attendanceRepository.UpdateStudentAbsence(date, Group, courseID, studentID, absence);
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("userId", i.getUser().getId());
+        jsonObject.put("userID", i.getUser().getId());
         jsonObject.put("courseCode", i.getCourse().getCourseCode());
         jsonObject.put("name", i.getUser().getName());
         jsonObject.put("userGroup", i.getUserGroup());

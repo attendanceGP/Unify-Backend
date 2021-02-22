@@ -53,7 +53,7 @@ public class AttendanceResource {
     public @ResponseBody
     String getStudentsList(@RequestParam("courseID") String courseID, @RequestParam("group") String group,
                            @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date){
-        return attendanceService.getStudentsList(courseID, group, date).toString();
+        return attendanceService.getStudentsList(courseID,group,date).toString();
     }
 
     @GetMapping(path = "/setStudentAbsence")
