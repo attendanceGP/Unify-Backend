@@ -90,7 +90,7 @@ public class AttendanceService {
         Attendance i = student.get(0);
         if(i.getAbsent() == absence) return "{\"error_code\":4}"; //user is already absent
 
-        attendanceRepository.UpdateStudentAbsence(date, Group, courseID, studentID, absence);
+        attendanceRepository.UpdateStudentAbsence(date, i.getUserGroup(), courseID, studentID, absence);
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("userID", i.getUser().getId());
