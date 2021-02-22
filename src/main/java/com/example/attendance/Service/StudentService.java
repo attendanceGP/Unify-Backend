@@ -92,7 +92,7 @@ public class StudentService {
 
             Course course = courseRepository.findById(courseId).get();
 
-            Attendance attendance = new Attendance(student, course, userGroup, date, true);
+            Attendance attendance = new Attendance(student, course, userGroup, date, false);
 
             attendanceRepository.save(attendance);
 

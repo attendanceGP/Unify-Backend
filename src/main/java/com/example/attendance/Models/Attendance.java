@@ -22,12 +22,12 @@ public class Attendance {
     private Course course;
 
     private String userGroup;
+    private boolean absent;
 
     @Basic
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    private boolean absent;
 
     public boolean isAbsent() {
         return absent;
@@ -97,4 +97,9 @@ public class Attendance {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    public boolean getAbsent() {
+        return absent;
+    }
+
 }
