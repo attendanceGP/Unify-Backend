@@ -44,4 +44,12 @@ public class TeachingAssistantResource {
     String getAbsence(@RequestParam Integer studentID, @RequestParam String courseID){
         return teachingAssistantService.getAbsence(studentID,courseID);
     }
+
+    @PostMapping( path = "closeTAattendance")
+    public @ResponseBody void closeTAattendance(@RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,
+                                             @RequestParam String userGroup, @RequestParam String courseId, @RequestParam Integer userId){
+
+        teachingAssistantService.closeTaAttendance(date, userGroup, courseId, userId);
+
+    }
 }

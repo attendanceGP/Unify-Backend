@@ -117,4 +117,15 @@ public class TeachingAssistantService {
         return userCourseRepository.findCourseCodeById(userID);
         }
 
+    public void closeTaAttendance(Date date, String userGroup, String courseId, Integer userId) {
+        String[] groups = userGroup.split(" ");
+        if(groups.length == 1) {
+            attendanceRepository.UpdateStudentAbsence(date,userGroup,courseId,userId,true);
+        }
+        else{
+            for(int i=0;i<groups.length; i++){
+                attendanceRepository.UpdateStudentAbsence(date,groups[i],courseId,userId,true);
+            }
+        }
+    }
 }
