@@ -24,8 +24,9 @@ public class Deadline {
     @Temporal(TemporalType.DATE)
     private Date postedDate;
 
-    @Basic
-    @Temporal(TemporalType.DATE)
+    // this is a datetime because we'll need the date and time for the due date
+    @Column(name = "deadline_date", columnDefinition="DATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date deadlineDate;
 
     private String name;

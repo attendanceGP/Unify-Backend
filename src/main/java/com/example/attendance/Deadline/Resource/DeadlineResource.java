@@ -16,7 +16,7 @@ public class DeadlineResource {
 
     @GetMapping(path = "getStudentDeadlines")
     public @ResponseBody
-    List<Deadline> getStudentDeadlines(@RequestParam Integer userId){
-        return deadlineService.getStudentDeadlines(userId);
+    String getStudentDeadlines(@RequestParam Integer userId){
+        return deadlineService.getStudentDeadlines(userId).toString();
     }
 }
