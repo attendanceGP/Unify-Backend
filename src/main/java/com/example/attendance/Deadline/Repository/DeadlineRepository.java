@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface DeadlineRepository extends CrudRepository<Deadline, Integer> {
 
-    @Query(value = "SELECT * FROM deadline WHERE fk_course_id IN (SELECT fk_course_code FROM user_course where fk_user_id = :userId);", nativeQuery = true)
+    @Query(value = "SELECT * FROM deadline WHERE deadline_date > current_timestamp() and fk_course_id IN (SELECT fk_course_code FROM user_course where fk_user_id = :userId);", nativeQuery = true)
     List<Deadline> getStudentDeadlines(@Param("userId") Integer id);
 }
