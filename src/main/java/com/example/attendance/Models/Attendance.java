@@ -28,6 +28,7 @@ public class Attendance {
     @Temporal(TemporalType.DATE)
     private Date date;
 
+    private boolean penalty;
 
     public boolean isAbsent() {
         return absent;
@@ -102,4 +103,11 @@ public class Attendance {
         return absent;
     }
 
+    public boolean isPenalty() {
+        return penalty;
+    }
+
+    public void setPenalty(boolean penalty) {
+        this.penalty = penalty;
+    }
 }
