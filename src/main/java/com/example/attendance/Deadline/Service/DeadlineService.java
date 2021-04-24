@@ -2,6 +2,10 @@ package com.example.attendance.Deadline.Service;
 
 import com.example.attendance.Deadline.Model.Deadline;
 import com.example.attendance.Deadline.Repository.DeadlineRepository;
+import com.example.attendance.Models.Course;
+import com.example.attendance.Models.User;
+import com.example.attendance.Repository.CourseRepository;
+import com.example.attendance.User.Repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,12 @@ import java.util.List;
 public class DeadlineService {
     @Autowired
     private DeadlineRepository deadlineRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public JSONArray getStudentDeadlines(Integer userId){
         JSONArray jsonArray = getJsonFromDeadlines((deadlineRepository.getStudentDeadlines(userId)));
@@ -39,5 +49,16 @@ public class DeadlineService {
 
     public int updateDueDate(Integer deadlineId, Date date){
         return deadlineRepository.updateDueDate(deadlineId, date);
+    }
+
+    public int postDeadline(Integer userId, String courseCode, String name, Date deadlineDate, Date postedDate) {
+        User user = userRepository.findById(userId).get();
+        Course course = courseRepository.findById(courseCode).get();
+
+        Deadline deadline = new Deadline(user, course, postedDate, deadlineDate, name);
+
+        deadlineRepository.save(deadline);
+
+        return 1;
     }
 }

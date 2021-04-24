@@ -87,7 +87,7 @@ public class UserService {
             Date currentDate = new Date();
             long duration = ((currentDate.getTime() - user.getLastLoginDate().getTime()) / (1000 * 60 * 60 * 24));
 
-            // if longer than 30 days, return appropriate message and deny
+            // if less than 30 days, return appropriate message and deny
             // if not, update date and allow login
             if (duration <= 30) {
                 //TODO remove the comment when testing is done

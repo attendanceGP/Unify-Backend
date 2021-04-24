@@ -25,7 +25,16 @@ public class DeadlineResource {
 
     @PostMapping(path = "updateDueDate")
     public @ResponseBody
-    int updateDueDate(@RequestParam Integer id ,@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date date){
+    int updateDueDate(@RequestParam Integer id,
+                      @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date date){
         return deadlineService.updateDueDate(id, date);
+    }
+
+    @PostMapping(path= "postDeadline")
+    public @ResponseBody
+    int postDeadline(@RequestParam Integer userId, @RequestParam String courseCode, @RequestParam String name,
+                     @RequestParam("deadlineDate") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date deadlineDate,
+                     @RequestParam("postedDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date postedDate){
+        return deadlineService.postDeadline(userId, courseCode, name, deadlineDate, postedDate);
     }
 }
