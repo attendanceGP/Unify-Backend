@@ -59,6 +59,8 @@ public class DeadlineService {
 
         deadlineRepository.save(deadline);
 
+        System.out.println("jgjgj" + userId + " " + courseCode + " " + name + " " + deadlineDate + " " + postedDate);
+
         return 1;
     }
 }
