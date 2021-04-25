@@ -21,6 +21,16 @@ public class Announcement {
     @Temporal(TemporalType.DATE)
     private Date date;
 
+    private String title;
+
     private String post;
+
+    public Announcement(User user, Course course, Date date, String title, String post) {
+        this.postedBy = user;
+        this.course = course;
+        this.date = date;
+        this.title = title;
+        this.post = post;
+    }
 
 }

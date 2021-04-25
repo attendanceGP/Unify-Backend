@@ -21,8 +21,6 @@ public class Post {
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    private String title;
-
     private String description;
 
 

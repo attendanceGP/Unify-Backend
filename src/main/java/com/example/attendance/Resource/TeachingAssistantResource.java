@@ -19,19 +19,11 @@ public class TeachingAssistantResource {
     @Autowired
     private TeachingAssistantService teachingAssistantService;
 
-//    @PostMapping( path = "/addTA") public @ResponseBody String addTA(){
-//        TeachingAssistant Ta1 = new TeachingAssistant(20192000, "first TA", "TA1", "TA1");
-//        teachingAssistantService.addTeachingAssistant(Ta1);
-//        return "done";
-//    }
-
     @PostMapping( path = "postattendance")
     public @ResponseBody void postAttendance(@RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,
                           @RequestParam String userGroup, @RequestParam String courseId, @RequestParam Integer userId){
 
         teachingAssistantService.postAttendance(date, userGroup, courseId, userId);
-
-        //return date.toString();
     }
 
     @GetMapping( path = "getTaughtCourses")
