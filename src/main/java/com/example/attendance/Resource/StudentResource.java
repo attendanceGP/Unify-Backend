@@ -252,14 +252,14 @@ public class StudentResource {
             String userGroup=userCourse.getUserGroup();
             attendances = attendanceService.findAttendanceByCourseAndUserGroupAndDateAndAbsent(course,userGroup,date,false);
             Optional<TeachingAssistant> optionalTa = null;
-            int index=0;
+           // int index=0;
             for (int j = 0; j < attendances.size(); j++) {
 
                 User user = attendances.get(j).getUser();
                 int id = user.getId();
                 optionalTa = teachingAssistantService.findTAById(id);
                 if (!optionalTa.isEmpty()) {
-                    JSONObject jsonObject = attendanceService.getJsonFromAttendance(attendances.get(index));
+                    JSONObject jsonObject = attendanceService.getJsonFromAttendance(attendances.get(j));
                     return jsonObject.toString();
 
                 }
