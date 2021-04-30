@@ -52,4 +52,12 @@ public class TeachingAssistantResource {
         teachingAssistantService.closeTaAttendance(date, userGroup, courseId, userId);
 
     }
+    @GetMapping(value = "updateTALocation")
+    public @ResponseBody void updateTaLocation(@RequestParam int id ,@RequestParam double longitude,@RequestParam double latitude ){
+        teachingAssistantService.updateTALocation(id,longitude,latitude);
+    }
+    @GetMapping(value = "getTA")
+    public @ResponseBody TeachingAssistant getTA(@RequestParam int id){
+        return teachingAssistantService.getTa(id);
+    }
 }

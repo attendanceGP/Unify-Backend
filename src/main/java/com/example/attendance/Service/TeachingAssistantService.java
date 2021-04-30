@@ -128,4 +128,14 @@ public class TeachingAssistantService {
             }
         }
     }
+    public void updateTALocation(int id , double longitude,double latitude){
+        TeachingAssistant ta = teachingAssistantRepository.findById(id).get();
+        ta.setLatitude(latitude);
+        ta.setLongitude(longitude);
+        teachingAssistantRepository.save(ta);
+
+    }
+    public TeachingAssistant getTa(int id){
+        return teachingAssistantRepository.findById(id).get();
+    }
 }

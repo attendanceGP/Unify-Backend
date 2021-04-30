@@ -35,6 +35,7 @@ public abstract class User {
         this.lastLoginDate = null;
     }
 
+
     public Integer getId() {
         return id;
     }
