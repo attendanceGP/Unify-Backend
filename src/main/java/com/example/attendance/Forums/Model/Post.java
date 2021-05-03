@@ -10,36 +10,47 @@ import java.util.Date;
 public class Post {
     @Id
     @GeneratedValue
-    private Integer id;
+    private long id;
 
     @ManyToOne
     @JoinColumn(name = "fk_user_id")
-    private User postedBy;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "fk_course_id")
     private Course course;
 
     @Basic
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
     private String title;
 
-    private String description;
+    private String content;
 
-    public Integer getId() {
+    public Post() {
+    }
+
+    public Post(User user, Course course, Date date, String title, String content) {
+        this.user = user;
+        this.course = course;
+        this.date = date;
+        this.title = title;
+        this.content = content;
+    }
+
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public User getPostedBy() {
-        return postedBy;
+    public User getUser() {
+        return user;
     }
-    public void setPostedBy(User postedBy) {
-        this.postedBy = postedBy;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Course getCourse() {
@@ -63,10 +74,10 @@ public class Post {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getContent() {
+        return content;
     }
-    public void setDescription(String description) {
-        this.description = description;
+    public void setContent(String content) {
+        this.content = content;
     }
 }

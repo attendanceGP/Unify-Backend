@@ -12,7 +12,7 @@
     <artifactId>attendance</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>attendance</name>
-    <description>Attendance</description>
+    <content>Attendance</content>
 
     <properties>
         <java.version>11</java.version>

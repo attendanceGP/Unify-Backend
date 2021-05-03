@@ -9,14 +9,14 @@ import java.util.Date;
 public class Reply {
     @Id
     @GeneratedValue
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "fk_user_id")
-    private User postedBy;
+    private User user;
 
     @Basic
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
     @ManyToOne
@@ -25,22 +25,33 @@ public class Reply {
 
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name ="fk_parent_reply_id")
-    private Reply parent_reply;
+    public Reply() {
+    }
 
-    public Integer getId() {
+    public Reply(User user, Post post, Date date, String description) {
+        this.user = user;
+        this.post = post;
+        this.date = date;
+        this.description = description;
+    }
+
+//    todo for recursive replies
+//    @ManyToOne
+//    @JoinColumn(name ="fk_parent_reply_id")
+//    private Reply parent_reply;
+
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public User getPostedBy() {
-        return postedBy;
+    public User getUser() {
+        return user;
     }
-    public void setPostedBy(User postedBy) {
-        this.postedBy = postedBy;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Date getDate() {
