@@ -9,7 +9,7 @@ import java.util.Date;
 public class Reply {
     @Id
     @GeneratedValue
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "fk_user_id")
@@ -40,10 +40,10 @@ public class Reply {
 //    @JoinColumn(name ="fk_parent_reply_id")
 //    private Reply parent_reply;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -42,8 +42,8 @@ public class ForumResource {
 
     @PostMapping(path = "removePost")
     public @ResponseBody
-    String removePost(@RequestParam Integer postId) {
-        return forumService.removePost(postId);
+    void removePost(@RequestParam Integer postId) {
+        forumService.removePost(postId);
     }
 
 
@@ -58,7 +58,7 @@ public class ForumResource {
 
     @PostMapping(path = "removeReply")
     public @ResponseBody
-    String removeReply(@RequestParam Integer postId, @RequestParam Integer replyId) {
-        return forumService.removeReply(postId, replyId);
+    void removeReply(@RequestParam Integer replyId) {
+        forumService.removeReply(replyId);
     }
 }

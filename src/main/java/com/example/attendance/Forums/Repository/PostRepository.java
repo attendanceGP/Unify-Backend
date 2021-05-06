@@ -13,4 +13,9 @@ public interface PostRepository extends CrudRepository<Post, Long> {
     @Query(value = "SELECT * FROM POST WHERE fk_course_id IN (SELECT fk_course_code FROM user_course where fk_user_id = :userId);", nativeQuery = true)
     List<Post> getStudentPosts(@Param("userId") Integer id);
 
+    @Query(value = "SELECT * FROM POST WHERE id = :postId ;", nativeQuery = true)
+    Post findById(@Param("postId")Integer postId);
+
+    @Query(value = "DELETE FROM Post WHERE id = :postId ;", nativeQuery = true)
+    void deleteById(@Param("postId")Integer postId);
 }

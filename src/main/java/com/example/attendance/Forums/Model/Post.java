@@ -10,7 +10,7 @@ import java.util.Date;
 public class Post {
     @Id
     @GeneratedValue
-    private long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "fk_user_id")
@@ -39,10 +39,10 @@ public class Post {
         this.content = content;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -94,13 +94,13 @@ public class ForumService {
         return "";
     }
 
-    public String removePost(Integer postId) {
-        return "";
+    public void removePost(Integer postId) {
+        postRepository.deleteById(postId);
     }
 
     public String addReply(Integer userId, Integer postId, Date date, String description) {
         User user = userRepository.findById(userId).get();
-        Post post = postRepository.findById(new Long(postId)).get();
+        Post post = postRepository.findById(postId);
 
         Reply reply = new Reply(user, post, date, description);
 
@@ -110,9 +110,8 @@ public class ForumService {
         return "";
     }
 
-    public String removeReply(Integer postId, Integer replyId) {
-
-        return "";
+    public void removeReply(Integer replyId) {
+        replyRepository.deleteById(replyId);
     }
 
 }
