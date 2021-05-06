@@ -25,9 +25,8 @@ public class AnnouncementResource {
 
     @DeleteMapping( path = "deletePostedAnnouncement")
     public @ResponseBody
-    void deletePostedAnnouncement(@RequestParam("postedDate") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date postedDate
-            , @RequestParam String title, @RequestParam Integer userId, @RequestParam("courseId") String courseId){
-        announcementService.deleteAnnouncement(postedDate, title, userId, courseId);
+    void deletePostedAnnouncement(@RequestParam Integer id){
+        announcementService.deleteAnnouncement(id);
     }
 
     @GetMapping( path = "getTaAnnouncements")

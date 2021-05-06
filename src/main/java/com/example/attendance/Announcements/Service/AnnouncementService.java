@@ -8,12 +8,12 @@ import com.example.attendance.Models.TeachingAssistant;
 import com.example.attendance.Repository.CourseRepository;
 import com.example.attendance.Repository.TeachingAssistantRepository;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class AnnouncementService {
@@ -41,27 +41,57 @@ public class AnnouncementService {
     // and the id of the user
     //that posted it, will be used for the recycler view
 
-    public void deleteAnnouncement(Date date, String title, Integer userId,String courseId){
-        announcementRepository.deleteByDateAndTitleAndPostedByAndCourse(date, title, userId,courseId);
+    public void deleteAnnouncement(Integer id){
+        announcementRepository.deleteById(id);
+    }
+
+    public JSONArray sortJsonArrayByDate(JSONArray announcements){
+        JSONArray sortedAnnouncements = new JSONArray();
+        List list = new ArrayList();
+        for(int i = 0; i < announcements.length(); i++) {
+            list.add(announcements.getJSONObject(i));
+        }
+
+        Collections.sort(list, new Comparator<JSONObject>() {
+            private static final String KEY_NAME = "postedDate";
+            @Override
+            public int compare(JSONObject a, JSONObject b) {
+                Date d1 = new Date();
+                Date d2 = new Date();
+                try {
+                    d1 = (Date)a.get(KEY_NAME);
+                    d2 = (Date)b.get(KEY_NAME);
+                } catch(JSONException e) {
+                    e.printStackTrace();
+                }
+                return d2.compareTo(d1);
+            }
+        });
+        for(int i = 0; i < announcements.length(); i++) {
+            sortedAnnouncements.put(list.get(i));
+        }
+        return sortedAnnouncements;
     }
 
     public JSONArray getTaAnnouncements(Integer userId){
         JSONArray jsonArray = getJsonFromAnnouncements((announcementRepository.getTaAnnouncements(userId)));
-        return jsonArray;
+        return sortJsonArrayByDate(jsonArray);
     }
 
     public JSONArray getStudentAnnouncements(Integer userId){
         JSONArray jsonArray = getJsonFromAnnouncements((announcementRepository.getStudentAnnouncements(userId)));
-        return jsonArray;
+        return sortJsonArrayByDate(jsonArray);
     }
 
     public JSONArray getSortedStudentAnnouncementsByCourse(Integer userId,String[] courseIds){
         JSONArray jsonArray = getJsonFromAnnouncements((announcementRepository.getSortedStudentAnnouncementsByCourseCode
                 (userId,courseIds[0])));
+
         for(int i=1; i<courseIds.length;i++){
+
             for(int j=0;
                 j<getJsonFromAnnouncements((announcementRepository.getSortedStudentAnnouncementsByCourseCode
-                    (userId,courseIds[0]))).length();j++){
+                    (userId,courseIds[i]))).length();j++){
 
                 jsonArray.put(getJsonFromAnnouncements((announcementRepository.getSortedStudentAnnouncementsByCourseCode
                         (userId,courseIds[i]))).getJSONObject(j));
@@ -69,7 +99,7 @@ public class AnnouncementService {
             }
         }
         
-        return jsonArray;
+        return sortJsonArrayByDate(jsonArray);
     }
 
     private JSONArray getJsonFromAnnouncements(List<Announcement> announcements){
