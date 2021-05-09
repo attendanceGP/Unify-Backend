@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface PostRepository extends CrudRepository<Post, Long> {
-    @Query(value = "SELECT * FROM POST WHERE fk_course_id IN (SELECT fk_course_code FROM user_course where fk_user_id = :userId);", nativeQuery = true)
+    @Query(value = "SELECT * FROM POST WHERE fk_course_id IN (SELECT fk_course_code FROM user_course where fk_user_id = :userId) ORDER BY date DESC ;", nativeQuery = true)
     List<Post> getStudentPosts(@Param("userId") Integer id);
 
     @Query(value = "SELECT * FROM POST WHERE id = :postId ;", nativeQuery = true)
