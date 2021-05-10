@@ -38,5 +38,8 @@ public interface AttendanceRepository extends CrudRepository<Attendance, Long> {
 
     List<Attendance> findAttendanceByUserAndCourse(Student student, Course course);
     List<Attendance> findAttendanceByCourseAndUserGroupAndDateAndAbsent(Course course ,String userGroup, Date date,boolean absent);
+    List<Attendance> findByUserAndCourseAndAbsent(User user , Course course , boolean isAbsent);
+    @Query(value = "SELECT * FROM attendance WHERE fk_course_id = :courseId and fk_user_id = :userId ;", nativeQuery = true)
+    List<Attendance> findByUserIDAndCourseID(@Param("userId") Integer userId, @Param("courseId") String courseId);
 
 }

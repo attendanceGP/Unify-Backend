@@ -5,6 +5,7 @@ import com.example.attendance.Repository.AttendanceRepository;
 import com.example.attendance.Repository.CourseRepository;
 import com.example.attendance.Repository.UserCourseRepository;
 import com.example.attendance.Repository.TeachingAssistantRepository;
+import com.example.attendance.Resource.StudentResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,8 @@ public class TeachingAssistantService {
     @Autowired
     private UserCourseRepository userCourseRepository;
 
+    @Autowired
+    private StudentResource studentResource;
     public Optional<TeachingAssistant> findTAById(Integer id){
         return teachingAssistantRepository.findById(id);
     }
@@ -89,9 +92,9 @@ public class TeachingAssistantService {
         }
     }
 
-    public String getAbsence(Integer StudentID, String CourseID){
+    public List<Attendance> getAbsence(Integer StudentID, String CourseID){
 
-        List<UserCourse> StudentCourseGroup = userCourseRepository.findByStudentIDAndCourseID(StudentID, CourseID);
+        /*List<UserCourse> StudentCourseGroup = userCourseRepository.findByStudentIDAndCourseID(StudentID, CourseID);
 
         if (StudentCourseGroup.isEmpty()){
             return "error: wrong data entered";
@@ -110,7 +113,25 @@ public class TeachingAssistantService {
             }
 
         }
-        return stdDates.toString();
+        return stdDates.toString();*/
+        String[] courses=studentResource.getStudentCourses(StudentID);
+        Course[] coursesCodes=new Course[courses.length];
+        int [][]toBeReturned=new int[courses.length][2];
+        for (int i = 0; i < courses.length; i++) {
+                    coursesCodes[i]=courseRepository.getCourseByCourseName(courses[i]);
+        }
+        for (int i = 0; i < coursesCodes.length; i++) {
+            List<Attendance> absence = attendanceRepository.findByUserIDAndCourseID(StudentID,coursesCodes[i].getCourseCode());
+            int absenceCounter = absence.size();
+            int pen=0;
+            for (int j = 0; j <absence.size() ; j++) {
+                if (absence.get(j).isAbsent())pen++;
+            }
+            toBeReturned[i][0]=absenceCounter;
+            toBeReturned[i][1]=pen;
+        }
+
+        return null;
     }
 
     public List<String> getRegisteredCourses(Integer userID){

@@ -41,7 +41,7 @@ public class TeachingAssistantResource {
 
     @GetMapping( path = "/getAbsence")
     public @ResponseBody
-    String getAbsence(@RequestParam Integer studentID, @RequestParam String courseID){
+    List<Attendance> getAbsence(@RequestParam Integer studentID, @RequestParam String courseID){
         return teachingAssistantService.getAbsence(studentID,courseID);
     }
 
