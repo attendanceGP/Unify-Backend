@@ -41,9 +41,10 @@ public class AnnouncementResource {
         return announcementService.getStudentAnnouncements(userId).toString();
     }
 
-    @GetMapping( path = "getSortedStudentAnnouncements")
+    @GetMapping( path = "getFilteredStudentAnnouncements")
     public @ResponseBody
-    String getSortedStudentAnnouncements(@RequestParam Integer userId,@RequestParam String[] courseId){
-        return announcementService.getSortedStudentAnnouncementsByCourse(userId,courseId).toString();
+    String getFilteredStudentAnnouncements(@RequestParam Integer userId,@RequestParam String[] courseId){
+        return announcementService.getFilteredStudentAnnouncementsByCourse(userId,courseId).toString();
     }
 }
+

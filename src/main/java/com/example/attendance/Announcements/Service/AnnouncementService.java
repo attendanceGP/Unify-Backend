@@ -45,6 +45,54 @@ public class AnnouncementService {
         announcementRepository.deleteById(id);
     }
 
+    public JSONArray getTaAnnouncements(Integer userId){
+        JSONArray jsonArray = getJsonFromAnnouncements((announcementRepository.getTaAnnouncements(userId)));
+        return sortJsonArrayByDate(jsonArray);
+    }
+
+    public JSONArray getStudentAnnouncements(Integer userId){
+        JSONArray jsonArray = getJsonFromAnnouncements((announcementRepository.getStudentAnnouncements(userId)));
+        return sortJsonArrayByDate(jsonArray);
+    }
+
+    public JSONArray getFilteredStudentAnnouncementsByCourse(Integer userId,String[] courseIds){
+        JSONArray jsonArray = getJsonFromAnnouncements((announcementRepository.getFilteredStudentAnnouncementsByCourseCode
+                (userId,courseIds[0])));
+
+        for(int i=1; i<courseIds.length;i++){
+
+            for(int j=0;
+                j<getJsonFromAnnouncements((announcementRepository.getFilteredStudentAnnouncementsByCourseCode
+                    (userId,courseIds[i]))).length();j++){
+
+                jsonArray.put(getJsonFromAnnouncements((announcementRepository.getFilteredStudentAnnouncementsByCourseCode
+                        (userId,courseIds[i]))).getJSONObject(j));
+
+            }
+        }
+        
+        return sortJsonArrayByDate(jsonArray);
+    }
+
+    private JSONArray getJsonFromAnnouncements(List<Announcement> announcements){
+        JSONArray jsonArray = new JSONArray();
+
+        for(Announcement announcement: announcements){
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("id", announcement.getId());
+            jsonObject.put("title", announcement.getTitle());
+            jsonObject.put("courseId", announcement.getCourse().getCourseCode());
+            jsonObject.put("postedDate", announcement.getPostedDate());
+            jsonObject.put("postedBy", announcement.getPostedBy().getName());
+            jsonObject.put("description", announcement.getPost());
+
+            jsonArray.put(jsonObject);
+        }
+
+        return jsonArray;
+    }
+
     public JSONArray sortJsonArrayByDate(JSONArray announcements){
         JSONArray sortedAnnouncements = new JSONArray();
         List list = new ArrayList();
@@ -71,53 +119,5 @@ public class AnnouncementService {
             sortedAnnouncements.put(list.get(i));
         }
         return sortedAnnouncements;
-    }
-
-    public JSONArray getTaAnnouncements(Integer userId){
-        JSONArray jsonArray = getJsonFromAnnouncements((announcementRepository.getTaAnnouncements(userId)));
-        return sortJsonArrayByDate(jsonArray);
-    }
-
-    public JSONArray getStudentAnnouncements(Integer userId){
-        JSONArray jsonArray = getJsonFromAnnouncements((announcementRepository.getStudentAnnouncements(userId)));
-        return sortJsonArrayByDate(jsonArray);
-    }
-
-    public JSONArray getSortedStudentAnnouncementsByCourse(Integer userId,String[] courseIds){
-        JSONArray jsonArray = getJsonFromAnnouncements((announcementRepository.getSortedStudentAnnouncementsByCourseCode
-                (userId,courseIds[0])));
-
-        for(int i=1; i<courseIds.length;i++){
-
-            for(int j=0;
-                j<getJsonFromAnnouncements((announcementRepository.getSortedStudentAnnouncementsByCourseCode
-                    (userId,courseIds[i]))).length();j++){
-
-                jsonArray.put(getJsonFromAnnouncements((announcementRepository.getSortedStudentAnnouncementsByCourseCode
-                        (userId,courseIds[i]))).getJSONObject(j));
-
-            }
-        }
-        
-        return sortJsonArrayByDate(jsonArray);
-    }
-
-    private JSONArray getJsonFromAnnouncements(List<Announcement> announcements){
-        JSONArray jsonArray = new JSONArray();
-
-        for(Announcement announcement: announcements){
-            JSONObject jsonObject = new JSONObject();
-
-            jsonObject.put("id", announcement.getId());
-            jsonObject.put("title", announcement.getTitle());
-            jsonObject.put("courseCode", announcement.getCourse().getCourseCode());
-            jsonObject.put("postedDate", announcement.getPostedDate());
-            jsonObject.put("postedBy", announcement.getPostedBy().getName());
-            jsonObject.put("post", announcement.getPost());
-
-            jsonArray.put(jsonObject);
-        }
-
-        return jsonArray;
     }
 }
