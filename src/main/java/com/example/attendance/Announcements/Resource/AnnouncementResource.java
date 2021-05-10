@@ -17,16 +17,18 @@ public class AnnouncementResource {
 
     @PostMapping( path = "postannouncement")
     public @ResponseBody
-    void postAnnouncement(@RequestParam Integer userId, @RequestParam String courseId, @RequestParam("postedDate") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date postedDate,
+    Integer postAnnouncement(@RequestParam Integer userId, @RequestParam String courseId, @RequestParam("postedDate") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date postedDate,
                         @RequestParam String title, @RequestParam String post){
         announcementService.postAnnouncement(userId,courseId,postedDate,title,post);
+        return 0;
 
     }
 
     @DeleteMapping( path = "deletePostedAnnouncement")
     public @ResponseBody
-    void deletePostedAnnouncement(@RequestParam Integer id){
+    Integer deletePostedAnnouncement(@RequestParam Integer id){
         announcementService.deleteAnnouncement(id);
+        return 0;
     }
 
     @GetMapping( path = "getTaAnnouncements")
