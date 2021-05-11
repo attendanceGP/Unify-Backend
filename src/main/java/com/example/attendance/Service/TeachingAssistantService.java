@@ -121,11 +121,11 @@ public class TeachingAssistantService {
                     coursesCodes[i]=courseRepository.getCourseByCourseName(courses[i]);
         }
         for (int i = 0; i < coursesCodes.length; i++) {
-            List<Attendance> absence = attendanceRepository.findByUserIDAndCourseID(StudentID,coursesCodes[i].getCourseCode());
+            List<Attendance> absence = attendanceRepository.findByUserIDAndCourseIDAndAbsent(StudentID,coursesCodes[i].getCourseCode(),true);
             int absenceCounter = absence.size();
             int pen=0;
             for (int j = 0; j <absence.size() ; j++) {
-                if (absence.get(j).isAbsent())pen++;
+                if (absence.get(j).isPenalty())pen++;
             }
             toBeReturned[i][0]=absenceCounter;
             toBeReturned[i][1]=pen;
