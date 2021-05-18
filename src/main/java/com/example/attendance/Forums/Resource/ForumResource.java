@@ -34,10 +34,10 @@ public class ForumResource {
 //    Posts
     @PostMapping(path = "addPost")
     public @ResponseBody
-    String addPost(@RequestParam Integer userId, @RequestParam String courseCode,
+    void addPost(@RequestParam Integer userId, @RequestParam String courseCode,
                  @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date date,
                  @RequestParam String title, @RequestParam String content) {
-        return forumService.addPost(userId, courseCode, date, title, content);
+        forumService.addPost(userId, courseCode, date, title, content);
     }
 
     @PostMapping(path = "removePost")
@@ -50,10 +50,10 @@ public class ForumResource {
 //    Replies
     @PostMapping(path = "addReply")
     public @ResponseBody
-    String addReply(@RequestParam Integer userId, @RequestParam Integer postId,
+    void addReply(@RequestParam Integer userId, @RequestParam Integer postId,
                  @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date date,
                  @RequestParam String description) {
-        return forumService.addReply(userId, postId, date, description);
+        forumService.addReply(userId, postId, date, description);
     }
 
     @PostMapping(path = "removeReply")

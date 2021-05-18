@@ -81,7 +81,7 @@ public class ForumService {
     }
 
 
-    public String addPost(Integer userId, String courseCode, Date date, String title, String content) {
+    public void addPost(Integer userId, String courseCode, Date date, String title, String content) {
         User user = userRepository.findById(userId).get();
         Course course = courseRepository.findById(courseCode).get();
 
@@ -90,15 +90,14 @@ public class ForumService {
         postRepository.save(post);
 
         System.out.println(" post details : " + userId + " " + courseCode + "\t" + date + "\t" + title + "\t" + content);
-
-        return "";
     }
 
     public void removePost(Integer postId) {
-        postRepository.deleteById(postId);
+        removePostReplies(postId);
+        postRepository.deletePostById(postId);
     }
 
-    public String addReply(Integer userId, Integer postId, Date date, String description) {
+    public void addReply(Integer userId, Integer postId, Date date, String description) {
         User user = userRepository.findById(userId).get();
         Post post = postRepository.findById(postId);
 
@@ -107,11 +106,14 @@ public class ForumService {
         replyRepository.save(reply);
 
         System.out.println(" reply details : " + userId + " " + postId + "\t" + date + "\t" + description);
-        return "";
     }
 
     public void removeReply(Integer replyId) {
-        replyRepository.deleteById(replyId);
+        replyRepository.deleteReplyById(replyId);
+    }
+
+    public void removePostReplies(Integer postId){
+        replyRepository.deleteReplyByPostId(postId);
     }
 
 }
