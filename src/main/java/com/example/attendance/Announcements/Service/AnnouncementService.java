@@ -55,25 +55,6 @@ public class AnnouncementService {
         return sortJsonArrayByDate(jsonArray);
     }
 
-    public JSONArray getFilteredStudentAnnouncementsByCourse(Integer userId,String[] courseIds){
-        JSONArray jsonArray = getJsonFromAnnouncements((announcementRepository.getFilteredStudentAnnouncementsByCourseCode
-                (userId,courseIds[0])));
-
-        for(int i=1; i<courseIds.length;i++){
-
-            for(int j=0;
-                j<getJsonFromAnnouncements((announcementRepository.getFilteredStudentAnnouncementsByCourseCode
-                    (userId,courseIds[i]))).length();j++){
-
-                jsonArray.put(getJsonFromAnnouncements((announcementRepository.getFilteredStudentAnnouncementsByCourseCode
-                        (userId,courseIds[i]))).getJSONObject(j));
-
-            }
-        }
-        
-        return sortJsonArrayByDate(jsonArray);
-    }
-
     private JSONArray getJsonFromAnnouncements(List<Announcement> announcements){
         JSONArray jsonArray = new JSONArray();
 

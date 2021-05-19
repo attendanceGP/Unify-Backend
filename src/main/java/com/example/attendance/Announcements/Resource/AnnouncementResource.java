@@ -43,10 +43,5 @@ public class AnnouncementResource {
         return announcementService.getStudentAnnouncements(userId).toString();
     }
 
-    @GetMapping( path = "getFilteredStudentAnnouncements")
-    public @ResponseBody
-    String getFilteredStudentAnnouncements(@RequestParam Integer userId,@RequestParam String[] courseId){
-        return announcementService.getFilteredStudentAnnouncementsByCourse(userId,courseId).toString();
-    }
 }
 

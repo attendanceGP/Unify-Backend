@@ -23,8 +23,4 @@ public interface AnnouncementRepository extends CrudRepository<Announcement, Int
     @Query(value = "SELECT * FROM announcement WHERE fk_course_id IN (SELECT fk_course_code FROM user_course where fk_user_id = :userId) ;", nativeQuery = true)
     List<Announcement> getStudentAnnouncements(@Param("userId") Integer userId);
 
-    //TBD
-    @Query(value = "SELECT * FROM announcement WHERE fk_course_id = :courseId and fk_course_id IN (SELECT fk_course_code FROM user_course where fk_user_id = :userId) ;", nativeQuery = true)
-    List<Announcement> getFilteredStudentAnnouncementsByCourseCode(@Param("userId") Integer userId, @Param("courseId") String courseId);
-
 }
