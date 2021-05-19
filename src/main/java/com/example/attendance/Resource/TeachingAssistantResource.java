@@ -1,5 +1,8 @@
 package com.example.attendance.Resource;
 
+import com.example.attendance.Absence.Recent;
+import com.example.attendance.Absence.TaRecent;
+import com.example.attendance.Absence.absence;
 import com.example.attendance.Models.Attendance;
 import com.example.attendance.Models.TeachingAssistant;
 import com.example.attendance.Service.CourseService;
@@ -41,8 +44,19 @@ public class TeachingAssistantResource {
 
     @GetMapping( path = "/getAbsence")
     public @ResponseBody
-    List<Attendance> getAbsence(@RequestParam Integer studentID, @RequestParam String courseID){
-        return teachingAssistantService.getAbsence(studentID,courseID);
+    absence[] getAbsence(@RequestParam Integer studentID){
+        return teachingAssistantService.getAbsence(studentID);
+    }
+    @GetMapping(path = "/getRecent")
+    public @ResponseBody
+    Recent[]getRecent(@RequestParam int studentId){
+        return teachingAssistantService.getRecent(studentId);
+    }
+
+    @GetMapping(path = "/getRecentTA")
+    public @ResponseBody
+    TaRecent[]getRecentTA(@RequestParam int TAId){
+        return teachingAssistantService.getRecentTA(TAId);
     }
 
     @PostMapping( path = "closeTAattendance")

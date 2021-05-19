@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
+import com.example.attendance.Absence.*;
 @Service
 public class TeachingAssistantService {
     @Autowired
@@ -92,7 +92,7 @@ public class TeachingAssistantService {
         }
     }
 
-    public List<Attendance> getAbsence(Integer StudentID, String CourseID){
+    public absence[] getAbsence(Integer StudentID){
 
         /*List<UserCourse> StudentCourseGroup = userCourseRepository.findByStudentIDAndCourseID(StudentID, CourseID);
 
@@ -115,23 +115,66 @@ public class TeachingAssistantService {
         }
         return stdDates.toString();*/
         String[] courses=studentResource.getStudentCourses(StudentID);
+        absence[] toBeReturned = new absence[courses.length];
         Course[] coursesCodes=new Course[courses.length];
-        int [][]toBeReturned=new int[courses.length][2];
+
         for (int i = 0; i < courses.length; i++) {
                     coursesCodes[i]=courseRepository.getCourseByCourseName(courses[i]);
         }
         for (int i = 0; i < coursesCodes.length; i++) {
-            List<Attendance> absence = attendanceRepository.findByUserIDAndCourseIDAndAbsent(StudentID,coursesCodes[i].getCourseCode(),true);
-            int absenceCounter = absence.size();
+            List<Attendance> absenceList = attendanceRepository.findByUserIDAndCourseIDAndAbsent(StudentID,coursesCodes[i].getCourseCode(),true);
+            toBeReturned[i] = new absence();
+            toBeReturned[i].setCourseCode(coursesCodes[i].getCourseCode());
+            toBeReturned[i].setAbsenceCounter(absenceList.size());
             int pen=0;
-            for (int j = 0; j <absence.size() ; j++) {
-                if (absence.get(j).isPenalty())pen++;
+            for (int j = 0; j <absenceList.size() ; j++) {
+                if (absenceList.get(j).isPenalty())pen++;
             }
-            toBeReturned[i][0]=absenceCounter;
-            toBeReturned[i][1]=pen;
+            toBeReturned[i].setPenCounter(pen);
         }
 
-        return null;
+        return toBeReturned;
+    }
+    public Recent[] getRecent(int UserId){
+        List<Attendance> attendances = attendanceRepository.findByUserID(UserId);
+        Recent [] recents = new Recent[attendances.size()];
+        for (int i = 0; i < recents.length; i++) {
+            String taName = null;
+            Date date = attendances.get(i).getDate();
+            Course course = attendances.get(i).getCourse();
+            String userGroup = attendances.get(i).getUserGroup();
+            List<Attendance>toGetTA = attendanceRepository.findByCourseAndDateAndUserGroup(course,date,userGroup);
+            for (int j = 0; j < toGetTA.size(); j++) {
+                User user = toGetTA.get(j).getUser();
+                if (user instanceof TeachingAssistant){
+                    taName = user.getName();
+                    break;
+                }
+            }
+            recents[i]=new Recent(course.getCourseCode(),taName,date.toString(),attendances.get(i).isPenalty());
+        }
+
+        return recents;
+    }
+    public TaRecent[] getRecentTA(int id){
+        List<Attendance> attendances = attendanceRepository.findByUserID(id);
+        TaRecent[] recents = new TaRecent[attendances.size()];
+        for (int i = 0; i < attendances.size(); i++) {
+            Course course = attendances.get(i).getCourse();
+            Date date = attendances.get(i).getDate();
+            String userGroup = attendances.get(i).getUserGroup();
+            List<Attendance>todayAttendance = attendanceRepository.findByCourseAndDateAndUserGroup(course,date,userGroup);
+            int attendedCounter = 0;
+            int absenceCounter=0;
+            for (int j = 0; j < todayAttendance.size(); j++) {
+                if (todayAttendance.get(j).getUser().getId()==id)continue;
+
+                if (!(todayAttendance.get(j).isAbsent()))attendedCounter++;
+                else absenceCounter++;
+            }
+            recents[i] = new TaRecent(course.getCourseCode(),date.toString(),attendedCounter,absenceCounter);
+        }
+        return recents;
     }
 
     public List<String> getRegisteredCourses(Integer userID){
