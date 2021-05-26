@@ -25,6 +25,8 @@ public class UserCourse {
 
     private Integer absenceCount;
 
+    private Integer penaltyCount;
+
     public UserCourse() {
     }
 
@@ -32,14 +34,18 @@ public class UserCourse {
         this.user = user;
         this.course = course;
         this.userGroup = userGroup;
+        this.attendanceCount = 0;
+        this.absenceCount =0;
+        this.penaltyCount =0;
     }
 
-    public UserCourse(User user, Course course, @NotNull String userGroup, Integer attendanceCount, Integer absenceCount) {
+    public UserCourse(User user, Course course, @NotNull String userGroup, Integer attendanceCount, Integer absenceCount, Integer penaltyCount) {
         this.user = user;
         this.course = course;
         this.userGroup = userGroup;
         this.attendanceCount = attendanceCount;
         this.absenceCount = absenceCount;
+        this.penaltyCount = penaltyCount;
     }
 
     public Integer getId() {
@@ -88,5 +94,13 @@ public class UserCourse {
 
     public void setAbsenceCount(Integer absenceCount) {
         this.absenceCount = absenceCount;
+    }
+
+    public Integer getPenaltyCount() {
+        return penaltyCount;
+    }
+
+    public void setPenaltyCount(Integer penaltyCount) {
+        this.penaltyCount = penaltyCount;
     }
 }

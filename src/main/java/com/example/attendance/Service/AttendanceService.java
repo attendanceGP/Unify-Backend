@@ -3,6 +3,7 @@ package com.example.attendance.Service;
 import com.example.attendance.Models.*;
 import com.example.attendance.Repository.AttendanceRepository;
 import com.example.attendance.Repository.StudentRepository;
+import com.example.attendance.Repository.UserCourseRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class AttendanceService {
     private AttendanceRepository attendanceRepository;
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private UserCourseRepository userCourseRepository;
 
     public List<Attendance>findByUserAndCourse(Student student, Course course){
         return attendanceRepository.findAttendanceByUserAndCourse(student,course);
@@ -79,7 +82,7 @@ public class AttendanceService {
         return jsonArray;
     }
 
-    public String setStudentsAbsence(String courseID, String Group, Date date, Integer studentID, boolean absence){
+    public String setStudentsAbsence(String courseID, String Group, Date date, Integer studentID, boolean absence, boolean penalty){
         String[] groups = Group.split(" ");
         List<Attendance> student = new ArrayList<>();
         for(String g: groups){
@@ -88,9 +91,9 @@ public class AttendanceService {
         }
         if(student.isEmpty()) return "{\"error_code\":2}"; //user not found
         Attendance i = student.get(0);
-        if(i.getAbsent() == absence) return "{\"error_code\":4}"; //user is already absent
+        if(i.getAbsent() == absence) return "{\"error_code\":4}"; //user is already absent/present
 
-        attendanceRepository.UpdateStudentAbsence(date, i.getUserGroup(), courseID, studentID, absence);
+        attendanceRepository.UpdateStudentAbsence(date, i.getUserGroup(), courseID, studentID, absence, penalty);
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("userID", i.getUser().getId());
@@ -98,5 +101,26 @@ public class AttendanceService {
         jsonObject.put("name", i.getUser().getName());
         jsonObject.put("userGroup", i.getUserGroup());
         return jsonObject.toString();
+    }
+
+    public void confirmAttendance(String courseID, String group, Date date) {
+        String[] groups = group.split(" ");
+        for(String g: groups){
+            List<Attendance> attendanceList = attendanceRepository.findByCourseAndUserGroupandDate(date, g, courseID);
+            for(Attendance attendee: attendanceList){
+                List<UserCourse> userCourseList = userCourseRepository.findStudentByCourseAndUserGroupAndID(g, courseID, attendee.getUser().getId());
+                for(UserCourse userCourse: userCourseList){
+                    Integer attendance_count = userCourse.getAttendanceCount();
+                    Integer absence_count = userCourse.getAbsenceCount();
+                    Integer penalty_count = userCourse.getPenaltyCount();
+
+                    if(attendee.getAbsent()) absence_count = absence_count+1;
+                    else attendance_count = attendance_count + 1;
+                    if(attendee.isPenalty()) penalty_count = penalty_count +1;
+
+                    userCourseRepository.UpdateStudentCounts(group, courseID, attendee.getUser().getId(), attendance_count, absence_count, penalty_count);
+                }
+            }
+        }
     }
 }

@@ -21,18 +21,25 @@ public interface AttendanceRepository extends CrudRepository<Attendance, Long> {
     @Query(value = "SELECT * FROM attendance WHERE fk_course_id = :courseId and fk_user_id = :userId and user_group = :group ;", nativeQuery = true)
     List<Attendance> findByUserIDAndCourseIDAndGroup(@Param("userId") Integer userId, @Param("courseId") String courseId, @Param("group") String Group);
 
-    // Used for TA to check students attendees in a certain course and confirm.
+    // Used for TA to check students attendees in a certain course (PRESENT STUDENT)
+    // -------- (FOR ATTENDEES LIST) ----------------
     @Query(value = "SELECT * from attendance WHERE date = :dateValue and user_group = :userGroup and fk_course_id = :courseId and absent = false and fk_user_id IN (SELECT id FROM user WHERE dtype = 'Student');", nativeQuery = true)
     List<Attendance> findStudentByCourseAndUserGroupAndDate(@Param("dateValue") Date date, @Param("userGroup") String userGroup, @Param("courseId") String courseId);
 
+    // Used for TA to check students attendees in a certain course and
+    // ----------- CONFIRM AND UPDATE COUNTS -----------------
+    @Query(value = "SELECT * from attendance WHERE date = :dateValue and user_group = :userGroup and fk_course_id = :courseId and fk_user_id IN (SELECT id FROM user WHERE dtype = 'Student');", nativeQuery = true)
+    List<Attendance> findByCourseAndUserGroupandDate(@Param("dateValue") Date date, @Param("userGroup") String userGroup, @Param("courseId") String courseId);
+
     // Used to find student by ID in certain course, group, and date to be able to modify it to attended or absent.
+    // ----------- FOR SET ABSENT/PRESENT BY TA -----------
     @Query(value = "SELECT * from attendance WHERE date = :dateValue and user_group = :userGroup and fk_course_id = :courseId and fk_user_id = :userID ;", nativeQuery = true)
     List<Attendance> findStudentByCourseAndUserGroupAndDateandID(@Param("dateValue") Date date, @Param("userGroup") String userGroup, @Param("courseId") String courseId, @Param("userID") Integer userID);
 
     // Used Update student's absent statues by ID in certain course, group, and date to be able to modify it to attended or absent.
     @Modifying @Transactional
-    @Query(value = "UPDATE attendance SET absent = :absent_update WHERE date = :dateValue and user_group = :userGroup and fk_course_id = :courseId and fk_user_id = :userID ;", nativeQuery = true)
-    void UpdateStudentAbsence(@Param("dateValue") Date date, @Param("userGroup") String userGroup, @Param("courseId") String courseId, @Param("userID") Integer userID, @Param("absent_update") boolean absent_update);
+    @Query(value = "UPDATE attendance SET absent = :absent_update, penalty = :att_penalty WHERE date = :dateValue and user_group = :userGroup and fk_course_id = :courseId and fk_user_id = :userID ;", nativeQuery = true)
+    void UpdateStudentAbsence(@Param("dateValue") Date date, @Param("userGroup") String userGroup, @Param("courseId") String courseId, @Param("userID") Integer userID, @Param("absent_update") boolean absent_update, @Param("att_penalty") boolean att_penalty);
 
 
 
