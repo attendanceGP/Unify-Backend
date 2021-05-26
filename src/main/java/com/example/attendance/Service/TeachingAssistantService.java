@@ -31,13 +31,6 @@ public class TeachingAssistantService {
         return teachingAssistantRepository.findById(id);
     }
 
-//    public void addTeachingAssistant(TeachingAssistant TA){
-//        teachingAssistantRepository.save(TA);
-//        //Date date = new Date(2020,10,20);
-//        //Attendance attendance = new Attendance(student, course, "G1", date);
-//        //attendanceRepository.save(attendance);
-//    }
-
     public List<User> getRegisteredUserIds(String userGroup, String courseId){
         List<UserCourse> UCs = userCourseRepository.findByCourseIdAndUserGroup(courseId,userGroup);
         List<User> associatedIds = new ArrayList<User>();
