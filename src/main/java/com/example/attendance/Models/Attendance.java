@@ -110,11 +110,4 @@ public class Attendance {
         this.penalty = penalty;
     }
 
-    public boolean isPenalty() {
-        return penalty;
-    }
-
-    public void setPenalty(boolean penalty) {
-        this.penalty = penalty;
-    }
 }

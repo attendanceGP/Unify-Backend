@@ -3,8 +3,10 @@ package com.example.attendance.Announcements.Service;
 import com.example.attendance.Announcements.Model.Announcement;
 import com.example.attendance.Announcements.Repository.AnnouncementRepository;
 import com.example.attendance.Models.Course;
+import com.example.attendance.Models.Professor;
 import com.example.attendance.Models.TeachingAssistant;
 
+import com.example.attendance.Models.User;
 import com.example.attendance.Repository.CourseRepository;
 import com.example.attendance.Repository.TeachingAssistantRepository;
 import org.json.JSONArray;
@@ -61,11 +63,20 @@ public class AnnouncementService {
         for(Announcement announcement: announcements){
             JSONObject jsonObject = new JSONObject();
 
+            String postedByType = null;
+            String []class_string = announcement.getPostedBy().getClass().toString().split("\\.");
+            if(class_string[(class_string.length)-1].equals("TeachingAssistant")){
+                postedByType = "TA ";
+            }
+            else if(class_string[(class_string.length)-1].equals("Professor")){
+                postedByType = "DR ";
+            }
+
             jsonObject.put("id", announcement.getId());
             jsonObject.put("title", announcement.getTitle());
             jsonObject.put("courseId", announcement.getCourse().getCourseCode());
             jsonObject.put("postedDate", announcement.getPostedDate());
-            jsonObject.put("postedBy", announcement.getPostedBy().getName());
+            jsonObject.put("postedBy",postedByType + announcement.getPostedBy().getName());
             jsonObject.put("description", announcement.getPost());
 
             jsonArray.put(jsonObject);
