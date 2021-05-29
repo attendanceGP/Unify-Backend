@@ -42,4 +42,10 @@ public class UserResource {
     String getToken(@RequestParam Integer id){
         return userService.getToken(id);
     }
+
+    @GetMapping(path = "helloworld")
+    public @ResponseBody
+    String helloWorld(){
+        return "Hello, World!";
+    }
 }
