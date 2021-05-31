@@ -129,7 +129,7 @@ public class TeachingAssistantService {
         return toBeReturned;
     }
     public Recent[] getRecent(int UserId){
-        List<Attendance> attendances = attendanceRepository.findByUserID(UserId);
+        List<Attendance> attendances = attendanceRepository.findByUserIDAndAbsent(UserId,true);
         Recent [] recents = new Recent[attendances.size()];
         for (int i = 0; i < recents.length; i++) {
             String taName = null;
