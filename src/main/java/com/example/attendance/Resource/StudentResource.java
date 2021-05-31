@@ -284,8 +284,9 @@ public class StudentResource {
         for (int i = 0; i <attendancesAbsent.size() ; i++) {
             User user = attendancesAbsent.get(i).getUser();
             int id = user.getId();
-            if (id == studentID){
+            if (id == studentID && attendancesAbsent.get(i).getId()>attendance.getId()){
                 attendanceID=attendancesAbsent.get(i).getId();
+                break;
             }
         }
         Attendance toBeAdded = new Attendance(attendanceID,student,course,userGroup,date,false);
