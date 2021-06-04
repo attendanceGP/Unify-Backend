@@ -52,4 +52,6 @@ public interface AttendanceRepository extends CrudRepository<Attendance, Long> {
     @Query(value = "SELECT * FROM attendance WHERE fk_user_id = :userId ;", nativeQuery = true)
     List<Attendance> findByUserID(@Param("userId") Integer userId);
     List<Attendance> findByCourseAndDateAndUserGroup(Course course,Date date,String userGroup);
+    @Query(value = "SELECT * FROM attendance WHERE fk_user_id = :userId and absent = :isAbsent ;", nativeQuery = true)
+    List<Attendance> findByUserIDAndAbsent(@Param("userId") Integer userId,@Param("isAbsent")boolean isAbsent);
 }

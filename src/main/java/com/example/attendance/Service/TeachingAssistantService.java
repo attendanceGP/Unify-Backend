@@ -129,7 +129,7 @@ public class TeachingAssistantService {
         return toBeReturned;
     }
     public Recent[] getRecent(int UserId){
-        List<Attendance> attendances = attendanceRepository.findByUserID(UserId);
+        List<Attendance> attendances = attendanceRepository.findByUserIDAndAbsent(UserId,true);
         Recent [] recents = new Recent[attendances.size()];
         for (int i = 0; i < recents.length; i++) {
             String taName = null;
@@ -149,10 +149,12 @@ public class TeachingAssistantService {
 
         return recents;
     }
+
     public TaRecent[] getRecentTA(int id){
         List<Attendance> attendances = attendanceRepository.findByUserID(id);
         TaRecent[] recents = new TaRecent[attendances.size()];
         for (int i = 0; i < attendances.size(); i++) {
+            ArrayList<User> toBeChecked=new ArrayList<>();
             Course course = attendances.get(i).getCourse();
             Date date = attendances.get(i).getDate();
             String userGroup = attendances.get(i).getUserGroup();
@@ -160,15 +162,22 @@ public class TeachingAssistantService {
             int attendedCounter = 0;
             int absenceCounter=0;
             for (int j = 0; j < todayAttendance.size(); j++) {
-                if (todayAttendance.get(j).getUser().getId()==id)continue;
-
-                if (!(todayAttendance.get(j).isAbsent()))attendedCounter++;
-                else absenceCounter++;
+                if (todayAttendance.get(j).getUser() instanceof TeachingAssistant)continue;
+                if (toBeChecked.contains(todayAttendance.get(j).getUser())) continue;
+                if (!(todayAttendance.get(j).isAbsent()) && todayAttendance.get(j).getId() > attendances.get(i).getId()){
+                    attendedCounter++;
+                    toBeChecked.add(todayAttendance.get(j).getUser());
+                }
+                else if (todayAttendance.get(j).isAbsent() && todayAttendance.get(j).getId() > attendances.get(i).getId()){
+                    absenceCounter++;
+                    toBeChecked.add(todayAttendance.get(j).getUser());
+                }
             }
             recents[i] = new TaRecent(course.getCourseCode(),date.toString(),attendedCounter,absenceCounter);
         }
         return recents;
     }
+
 
     public List<String> getRegisteredCourses(Integer userID){
         return userCourseRepository.findCourseCodeById(userID);
