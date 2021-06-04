@@ -62,12 +62,16 @@ public class TeachingAssistantService {
             List<User> attendingStudentIds = getRegisteredUserIds(userGroup, courseId);
 
             for (int i = 0; i < attendingStudentIds.size(); i++) {
-                Attendance studentAttendance = new Attendance(attendingStudentIds.get(i), course, userGroup, date, true);
+                String []class_string = attendingStudentIds.get(i).getClass().toString().split("\\.");
+                if(!(class_string[(class_string.length)-1].equals("TeachingAssistant")) &
+                        !(class_string[(class_string.length)-1].equals("Professor"))){
+                    Attendance studentAttendance = new Attendance(attendingStudentIds.get(i), course, userGroup, date, true);
 
-                attendanceRepository.save(studentAttendance);
+                    attendanceRepository.save(studentAttendance);
+                }
             }
         }
-        
+
         else{
             for(int i=0;i<groups.length; i++){
                 Attendance multiAttendance = new Attendance(ta, course, groups[i], date, false);
@@ -77,9 +81,13 @@ public class TeachingAssistantService {
                 List<User> attendingStudentIds = getRegisteredUserIds(groups[i], courseId);
 
                 for (int j = 0; j < attendingStudentIds.size(); j++) {
-                    Attendance studentAttendance = new Attendance(attendingStudentIds.get(j), course, groups[i], date, true);
+                    String []class_string = attendingStudentIds.get(j).getClass().toString().split("\\.");
+                    if(!(class_string[(class_string.length)-1].equals("TeachingAssistant")) &
+                            !(class_string[(class_string.length)-1].equals("Professor"))) {
+                        Attendance studentAttendance = new Attendance(attendingStudentIds.get(j), course, groups[i], date, true);
 
-                    attendanceRepository.save(studentAttendance);
+                        attendanceRepository.save(studentAttendance);
+                    }
                 }
             }
         }
