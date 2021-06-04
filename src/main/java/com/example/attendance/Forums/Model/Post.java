@@ -26,6 +26,7 @@ public class Post {
 
     private String title;
 
+    @Column(name="content", columnDefinition="TEXT")
     private String content;
 
     public Post() {

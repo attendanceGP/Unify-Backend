@@ -27,6 +27,7 @@ public class Announcement {
 
     private String title;
 
+    @Column(name="post", columnDefinition="TEXT")
     private String post;
 
     public Announcement(User user, Course course, Date postedDate, String title, String post) {

@@ -23,6 +23,7 @@ public class Reply {
     @JoinColumn(name = "fk_post_id")
     private Post post;
 
+    @Column(name="description", columnDefinition="TEXT")
     private String description;
 
     public Reply() {
