@@ -2,6 +2,7 @@ package com.example.attendance.Announcements.Service;
 
 import com.example.attendance.Announcements.Model.Announcement;
 import com.example.attendance.Announcements.Repository.AnnouncementRepository;
+import com.example.attendance.FirebaseMessaging.FirebaseMessagingService;
 import com.example.attendance.Models.Course;
 import com.example.attendance.Models.Professor;
 import com.example.attendance.Models.TeachingAssistant;
@@ -9,6 +10,7 @@ import com.example.attendance.Models.TeachingAssistant;
 import com.example.attendance.Models.User;
 import com.example.attendance.Repository.CourseRepository;
 import com.example.attendance.Repository.TeachingAssistantRepository;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +30,9 @@ public class AnnouncementService {
     @Autowired
     private AnnouncementRepository announcementRepository;
 
+    @Autowired
+    private FirebaseMessagingService firebaseMessagingService;
+
     //adds an announcement to the database according to user input
     public void postAnnouncement(Integer userId, String courseId, Date postedDate, String title, String post){
         TeachingAssistant ta = teachingAssistantRepository.findById(userId).get();
@@ -37,6 +42,13 @@ public class AnnouncementService {
         Announcement announcement = new Announcement(ta,course,postedDate,title,post);
 
         announcementRepository.save(announcement);
+
+        try {
+            firebaseMessagingService.sendNotification("New announcement",
+                    courseId + ": " + title, courseId);
+        } catch (FirebaseMessagingException e) {
+            e.printStackTrace();
+        }
     }
 
     //deletes an announcement from the database according to its date,title, associated course
