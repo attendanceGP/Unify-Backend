@@ -3,13 +3,11 @@ package com.example.attendance.Announcements.Service;
 import com.example.attendance.Announcements.Model.Announcement;
 import com.example.attendance.Announcements.Repository.AnnouncementRepository;
 import com.example.attendance.FirebaseMessaging.FirebaseMessagingService;
-import com.example.attendance.Models.Course;
-import com.example.attendance.Models.Professor;
-import com.example.attendance.Models.TeachingAssistant;
+import com.example.attendance.Models.*;
 
-import com.example.attendance.Models.User;
 import com.example.attendance.Repository.CourseRepository;
 import com.example.attendance.Repository.TeachingAssistantRepository;
+import com.example.attendance.Repository.UserCourseRepository;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,18 +26,22 @@ public class AnnouncementService {
     private CourseRepository courseRepository;
 
     @Autowired
+    private UserCourseRepository userCourseRepository;
+
+    @Autowired
     private AnnouncementRepository announcementRepository;
 
     @Autowired
     private FirebaseMessagingService firebaseMessagingService;
 
     //adds an announcement to the database according to user input
-    public void postAnnouncement(Integer userId, String courseId, Date postedDate, String title, String post){
+    public void postAnnouncement(Integer userId, String courseId, Date postedDate, String title,
+            String announcementGroups, String post){
         TeachingAssistant ta = teachingAssistantRepository.findById(userId).get();
 
         Course course = courseRepository.findById(courseId).get();
 
-        Announcement announcement = new Announcement(ta,course,postedDate,title,post);
+        Announcement announcement = new Announcement(ta,course,postedDate,title,announcementGroups,post);
 
         announcementRepository.save(announcement);
 
@@ -66,7 +68,8 @@ public class AnnouncementService {
 
     public JSONArray getStudentAnnouncements(Integer userId){
         JSONArray jsonArray = getJsonFromAnnouncements((announcementRepository.getStudentAnnouncements(userId)));
-        return sortJsonArrayByDate(jsonArray);
+        JSONArray groupFilteredArray=filterJsonArrayByGroup(jsonArray,userId);
+        return sortJsonArrayByDate(groupFilteredArray);
     }
 
     private JSONArray getJsonFromAnnouncements(List<Announcement> announcements){
@@ -90,6 +93,7 @@ public class AnnouncementService {
             jsonObject.put("postedDate", announcement.getPostedDate());
             jsonObject.put("postedBy",postedByType + announcement.getPostedBy().getName());
             jsonObject.put("description", announcement.getPost());
+            jsonObject.put("announcementGroups",announcement.getAnnouncementGroups());
 
             jsonArray.put(jsonObject);
         }
@@ -123,5 +127,30 @@ public class AnnouncementService {
             sortedAnnouncements.put(list.get(i));
         }
         return sortedAnnouncements;
+    }
+
+    public JSONArray filterJsonArrayByGroup(JSONArray announcements,int userId){
+        List<UserCourse> studentCourses = userCourseRepository.findUserCourseByUserId(userId);
+
+        for(int i=0; i<announcements.length();i++) {
+            JSONObject x;
+            x = announcements.getJSONObject(i);
+            String announcementGroups =(String) x.get("announcementGroups");
+            String crsCode =(String) x.get("courseId");
+
+            for(int j=0;j<studentCourses.size();j++){
+                if(studentCourses.get(j).getCourse().getCourseCode().equals(crsCode)){
+                    if(announcementGroups.equals("all") || announcementGroups.equals("All")){
+                        break;
+                    }
+                    else if (!announcementGroups.contains(studentCourses.get(j).getUserGroup())) {
+                        announcements.remove(i);
+                    }
+                    break;
+                }
+            }
+
+        }
+        return announcements;
     }
 }

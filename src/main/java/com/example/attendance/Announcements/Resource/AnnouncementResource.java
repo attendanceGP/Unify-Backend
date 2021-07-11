@@ -18,8 +18,8 @@ public class AnnouncementResource {
     @PostMapping( path = "postannouncement")
     public @ResponseBody
     Integer postAnnouncement(@RequestParam Integer userId, @RequestParam String courseId, @RequestParam("postedDate") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date postedDate,
-                        @RequestParam String title, @RequestParam String post){
-        announcementService.postAnnouncement(userId,courseId,postedDate,title,post);
+                        @RequestParam String title,@RequestParam String announcementGroups, @RequestParam String post){
+        announcementService.postAnnouncement(userId,courseId,postedDate,title,announcementGroups,post);
         return 0;
 
     }

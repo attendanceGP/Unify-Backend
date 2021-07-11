@@ -27,14 +27,18 @@ public class Announcement {
 
     private String title;
 
+    private String announcementGroups;
+
     @Column(name="post", columnDefinition="TEXT")
     private String post;
 
-    public Announcement(User user, Course course, Date postedDate, String title, String post) {
+    public Announcement(User user, Course course, Date postedDate, String title
+            ,String announcementGroups, String post) {
         this.postedBy = user;
         this.course = course;
         this.postedDate = postedDate;
         this.title = title;
+        this.announcementGroups = announcementGroups;
         this.post = post;
     }
 
@@ -80,6 +84,14 @@ public class Announcement {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getAnnouncementGroups() {
+        return announcementGroups;
+    }
+
+    public void setAnnouncementGroups(String announcementGroups) {
+        this.announcementGroups = announcementGroups;
     }
 
     public String getPost() {
