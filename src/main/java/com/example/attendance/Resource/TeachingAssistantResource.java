@@ -30,7 +30,7 @@ public class TeachingAssistantResource {
     }
 
     @GetMapping( path = "getTaughtCourses")
-    public @ResponseBody List<String> postAttendance(@RequestParam Integer userId){
+    public @ResponseBody List<String> getTaughtCourses(@RequestParam Integer userId){
         return teachingAssistantService.getRegisteredCourses(userId);
     }
 
@@ -65,5 +65,11 @@ public class TeachingAssistantResource {
     @GetMapping(value = "getTA")
     public @ResponseBody TeachingAssistant getTA(@RequestParam int id){
         return teachingAssistantService.getTa(id);
+    }
+
+    @GetMapping( path = "getExistingAttendanceGroups")
+    public @ResponseBody List<String>  getExistingAttendanceGroups(@RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,
+                                                           @RequestParam String userGroup, @RequestParam String courseId, @RequestParam Integer userId){
+        return teachingAssistantService.attendanceGroupsAlreadyExist(date,userId,courseId,userGroup);
     }
 }

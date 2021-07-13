@@ -212,4 +212,25 @@ public class TeachingAssistantService {
     public TeachingAssistant getTa(int id){
         return teachingAssistantRepository.findById(id).get();
     }
+
+    public List<String> attendanceGroupsAlreadyExist(Date date,Integer userId,String courseId,String groups){
+        List<Attendance> TaAttendanceList = attendanceRepository.findByCourseAndDate(date,courseId);
+        List<String> existingGroups = new ArrayList<>();
+
+        String[] myGroups = groups.split(" ");
+
+            for(int i=0;i<TaAttendanceList.size();i++) {
+                for(int j=0;j<myGroups.length;j++){
+                    if(TaAttendanceList.get(i).getUserGroup().contains(myGroups[j])
+                    && (!existingGroups.contains(myGroups[j]))){
+                        existingGroups.add(myGroups[j]);
+                    }
+                    else{
+                        continue;
+                    }
+                }
+            }
+
+        return existingGroups;
+    }
 }
