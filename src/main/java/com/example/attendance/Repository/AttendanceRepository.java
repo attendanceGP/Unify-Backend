@@ -56,8 +56,7 @@ public interface AttendanceRepository extends CrudRepository<Attendance, Long> {
     @Query(value = "SELECT * FROM attendance WHERE fk_user_id = :userId and absent = :isAbsent ;", nativeQuery = true)
     List<Attendance> findByUserIDAndAbsent(@Param("userId") Integer userId,@Param("isAbsent")boolean isAbsent);
 
-    // Used for to check whether the TA has already recorded attendance for said day and course
-    // ----------- CHECK IF ATTENDANCE ALREADY EXISTS -----------------
+    // returns a list of all attendances recorded on a specific date with a specific course
     @Query(value = "SELECT * from attendance WHERE date = :dateValue and fk_course_id = :courseId ;", nativeQuery = true)
     List<Attendance> findByCourseAndDate(@Param("dateValue") Date date, @Param("courseId") String courseId);
 

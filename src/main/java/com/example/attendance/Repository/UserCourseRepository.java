@@ -22,9 +22,11 @@ public interface UserCourseRepository extends CrudRepository<UserCourse, Integer
     @Query(value = "SELECT * FROM user_course WHERE fk_user_id = :userId and fk_course_code = :courseId", nativeQuery = true)
     List<UserCourse> findUserCourseByCourseAndAndUser(@Param("userId") Integer userId, @Param("courseId") String courseId);
 
+    //return a list of userCourses from the database that correspond to the given course id and userGroup
     @Query(value = "SELECT * FROM user_course WHERE fk_course_code = :courseId and user_group = :userGroup", nativeQuery = true)
     List<UserCourse> findByCourseIdAndUserGroup(@Param("courseId") String courseId, @Param("userGroup") String userGroup);
 
+    //returns a list of all course codes from the userCourse table where someone is registered by providing their id
     @Query(value = "SELECT fk_course_code FROM user_course WHERE fk_user_id = :userId", nativeQuery = true)
     List<String> findCourseCodeById(@Param("userId") Integer userId);
 
@@ -40,8 +42,7 @@ public interface UserCourseRepository extends CrudRepository<UserCourse, Integer
     List<UserCourse> findUserCourseByUser(User user);
     UserCourse findUserCourseByUserAndCourse(User user , Course course);
 
+    //returns a list of all userCourses from the userCourse table that have the given userID as a foreign key
     @Query(value = "SELECT * FROM user_course WHERE fk_user_id = :userId", nativeQuery = true)
     List<UserCourse> findUserCourseByUserId(@Param("userId") Integer userId);
-
-
 }
