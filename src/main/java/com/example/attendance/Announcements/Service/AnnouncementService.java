@@ -45,11 +45,24 @@ public class AnnouncementService {
 
         announcementRepository.save(announcement);
 
-        try {
-            firebaseMessagingService.sendNotification("New announcement",
-                    courseId + ": " + title, courseId);
-        } catch (FirebaseMessagingException e) {
-            e.printStackTrace();
+        String[] groups = announcementGroups.split(" ");
+
+        if(groups.length == 1 && groups[0].toLowerCase().equals("all")){
+            try {
+                firebaseMessagingService.sendNotification("New announcement",
+                        courseId + ": " + title, courseId);
+            } catch (FirebaseMessagingException e) {
+                e.printStackTrace();
+            }
+        }else{
+            for(String group: groups){
+                try {
+                    firebaseMessagingService.sendNotification("New announcement",
+                            courseId + ": " + title, courseId + "-" + group);
+                } catch (FirebaseMessagingException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

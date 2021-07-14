@@ -1,11 +1,10 @@
 package com.example.attendance.Resource;
 
-import com.example.attendance.Containers.StudentCourseContainer;
 import com.example.attendance.Models.*;
 
 import com.example.attendance.Repository.StudentRepository;
 import com.example.attendance.Service.CourseService;
-import com.example.attendance.Service.StudentCourseService;
+import com.example.attendance.Service.UserCourseService;
 import com.example.attendance.Service.StudentService;
 import com.example.attendance.Service.*;
 import org.json.JSONObject;
@@ -15,7 +14,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +28,7 @@ public class StudentResource {
     private CourseService courseService;
 
     @Autowired
-    private StudentCourseService studentCourseService;
+    private UserCourseService userCourseService;
 
     @Autowired
     private StudentRepository studentRepository;
@@ -46,7 +44,7 @@ public class StudentResource {
     public @ResponseBody String[]getStudentCourses(@RequestParam Integer studentID){
     Optional<Student> student = studentService.findById(studentID);
     if (student.isEmpty()) return new String[0];
-    List<UserCourse> studentCourses = studentCourseService.getUserCourses(student.get());
+    List<UserCourse> studentCourses = userCourseService.getUserCourses(student.get());
     if (studentCourses.isEmpty()) return new String[0];
     String [] courses = new String[studentCourses.size()];
         for (int i = 0; i <studentCourses.size() ; i++) {
@@ -62,7 +60,7 @@ public class StudentResource {
         List<Attendance>attendances=null;
         for (int i = 0; i <courses.length ; i++) {
             Course course = courseService.findByCourseName(courses[i]);
-            UserCourse userCourse = studentCourseService.getUserCourse(student,course);
+            UserCourse userCourse = userCourseService.getUserCourse(student,course);
             String userGroup=userCourse.getUserGroup();
             attendances = attendanceService.findAttendanceByCourseAndUserGroupAndDateAndAbsent(course,userGroup,date,false);
             Optional<TeachingAssistant> optionalTa = null;
@@ -91,7 +89,7 @@ public class StudentResource {
         }
         Student student = studentService.findById(studentID).get();
         Course course = courseService.findByCourseName(courseName);
-        UserCourse userCourse = studentCourseService.getUserCourse(student,course);
+        UserCourse userCourse = userCourseService.getUserCourse(student,course);
         String userGroup=userCourse.getUserGroup();
         List<Attendance> attendancesAbsent = attendanceService.findAttendanceByCourseAndUserGroupAndDateAndAbsent(course,userGroup,date,true);
         long attendanceID=0;
