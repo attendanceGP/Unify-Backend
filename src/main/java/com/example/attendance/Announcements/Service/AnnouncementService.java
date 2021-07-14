@@ -79,11 +79,11 @@ public class AnnouncementService {
             JSONObject jsonObject = new JSONObject();
 
             String postedByType = null;
-            String []class_string = announcement.getPostedBy().getClass().toString().split("\\.");
-            if(class_string[(class_string.length)-1].equals("TeachingAssistant")){
+            //String []class_string = announcement.getPostedBy().getClass().toString().split("\\.");
+            if(announcement.getPostedBy() instanceof TeachingAssistant){
                 postedByType = "TA ";
             }
-            else if(class_string[(class_string.length)-1].equals("Professor")){
+            else if(announcement.getPostedBy() instanceof TeachingAssistant){
                 postedByType = "DR ";
             }
 

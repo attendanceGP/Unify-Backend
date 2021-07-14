@@ -60,11 +60,9 @@ public class TeachingAssistantService {
             attendanceRepository.save(attendance);
 
             List<User> attendingStudentIds = getRegisteredUserIds(userGroup, courseId);
-
             for (int i = 0; i < attendingStudentIds.size(); i++) {
-                String []class_string = attendingStudentIds.get(i).getClass().toString().split("\\.");
-                if(!(class_string[(class_string.length)-1].equals("TeachingAssistant")) &
-                        !(class_string[(class_string.length)-1].equals("Professor"))){
+                if(!(attendingStudentIds.get(i) instanceof Professor) &
+                        !(attendingStudentIds.get(i) instanceof TeachingAssistant)){
                     Attendance studentAttendance = new Attendance(attendingStudentIds.get(i), course, userGroup, date, true);
 
                     attendanceRepository.save(studentAttendance);

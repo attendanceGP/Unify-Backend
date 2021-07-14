@@ -62,6 +62,7 @@ public class TeachingAssistantResource {
     public @ResponseBody void updateTaLocation(@RequestParam int id ,@RequestParam double longitude,@RequestParam double latitude ){
         teachingAssistantService.updateTALocation(id,longitude,latitude);
     }
+
     @GetMapping(value = "getTA")
     public @ResponseBody TeachingAssistant getTA(@RequestParam int id){
         return teachingAssistantService.getTa(id);

@@ -28,50 +28,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-//    public String login(String username, String password){
-//        String url = "http://my-json-server.typicode.com/alialfie/testingJSON/db";  // dummy data for testing
-//
-//        String response = "";
-//
-//        try {
-//            response = QueryUtils.makeHttpRequest(url);
-//        }catch (Exception e){
-//            return null;
-//        }
-//
-//        System.out.println(response);
-//
-//        JSONObject baseJsonResponse = new JSONObject(response);
-//
-//        JSONObject userJson = baseJsonResponse.getJSONObject("user");
-//
-//        User user = getUserParamsFromJson(userJson);
-//
-//
-//        userRepository.save(user);
-//        return userJson.toString();
-//    }
-//
-//    private User getUserParamsFromJson(JSONObject userJSON){
-//        switch (userJSON.getString("type")){
-//            case "student":
-//                Student student = new Student(userJSON.getInt("id"), userJSON.getString("name"),
-//                        userJSON.getInt("level"), userJSON.getDouble("gpa"));
-//                return student;
-//
-//            case "TA":
-//                TeachingAssistant TA = new TeachingAssistant(userJSON.getInt("id"), userJSON.getString("name"));
-//                return TA;
-//
-//            case "professor":
-//                Professor professor = new Professor(userJSON.getInt("id"), userJSON.getString("name"));
-//                return professor;
-//
-//                default:
-//                    return null;
-//        }
-//    }
-
     public String login(String username, String password){
         List<User> users = userRepository.findByUsernameAndPassword(username, password);
 

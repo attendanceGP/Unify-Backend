@@ -9,10 +9,6 @@ public class Attendance {
     @GeneratedValue
     private Long id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "fk_slot_id")
-//    private Slot slot;
-
     @ManyToOne
     @JoinColumn(name = "fk_user_id")
     private User user;
