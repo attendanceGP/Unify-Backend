@@ -34,8 +34,8 @@ public class UserCourseService {
         for(UserCourse userCourse: userCourses){
             JSONObject jsonObject = new JSONObject();
 
-            jsonObject.put("user_group", userCourse.getUserGroup());
-            jsonObject.put("course_code", userCourse.getCourse().getCourseCode());
+            jsonObject.put("userGroup", userCourse.getUserGroup());
+            jsonObject.put("courseCode", userCourse.getCourse().getCourseCode());
 
             jsonArray.put(jsonObject);
         }
