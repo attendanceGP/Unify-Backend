@@ -31,7 +31,9 @@ public class AttendanceService {
     public List<Attendance>findAttendanceByCourseAndUserGroupAndDateAndAbsent(Course course ,String userGroup, Date date,boolean absent){
         return attendanceRepository.findAttendanceByCourseAndUserGroupAndDateAndAbsent(course,userGroup,date,absent);
     }
-
+    public List<Attendance>findAttendanceByUserAndCourseAndUserGroupAndDateAndAbsent(Student student,Course course ,String userGroup, Date date,boolean absent){
+        return attendanceRepository.findAttendanceByUserAndCourseAndUserGroupAndDateAndAbsent(student,course,userGroup,date,absent);
+    }
     public void addAttendance(Attendance attendance){attendanceRepository.save(attendance);}
     public Optional<Attendance> getByID(long ID){return attendanceRepository.findById(ID);}
 

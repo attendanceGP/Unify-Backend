@@ -90,36 +90,16 @@ public class TeachingAssistantService {
             }
         }
     }
-
+    // get the overview absence of the student that returns the course code, number of absence and num of pens
     public absence[] getAbsence(Integer StudentID){
-
-        /*List<UserCourse> StudentCourseGroup = userCourseRepository.findByStudentIDAndCourseID(StudentID, CourseID);
-
-        if (StudentCourseGroup.isEmpty()){
-            return "error: wrong data entered";
-        }
-        String group= StudentCourseGroup.get(0).getUserGroup();
-
-        List<Attendance> StudentList = attendanceRepository.findByUserIDAndCourseIDAndGroup(StudentID, CourseID, group);
-        //System.out.println("number of absences : " + (TAList.size()-StudentList.size()));
-
-
-        ArrayList<Date> stdDates = new ArrayList<>();
-
-        for(Attendance std: StudentList){
-            if (std.isAbsent()){
-                stdDates.add(std.getDate());
-            }
-
-        }
-        return stdDates.toString();*/
+        // get the students data
         String[] courses=studentResource.getStudentCourses(StudentID);
         absence[] toBeReturned = new absence[courses.length];
         Course[] coursesCodes=new Course[courses.length];
-
         for (int i = 0; i < courses.length; i++) {
                     coursesCodes[i]=courseRepository.getCourseByCourseName(courses[i]);
         }
+        // store the data of every missed lab/section
         for (int i = 0; i < coursesCodes.length; i++) {
             List<Attendance> absenceList = attendanceRepository.findByUserIDAndCourseIDAndAbsent(StudentID,coursesCodes[i].getCourseCode(),true);
             toBeReturned[i] = new absence();
@@ -134,6 +114,8 @@ public class TeachingAssistantService {
 
         return toBeReturned;
     }
+
+    // get the students recent absences that contains the courseCode, ta name , date and penalty
     public Recent[] getRecent(int UserId){
         List<Attendance> attendances = attendanceRepository.findByUserIDAndAbsent(UserId,true);
         Recent [] recents = new Recent[attendances.size()];
@@ -142,6 +124,7 @@ public class TeachingAssistantService {
             Date date = attendances.get(i).getDate();
             Course course = attendances.get(i).getCourse();
             String userGroup = attendances.get(i).getUserGroup();
+            //get all the attendances rows that contain the date,course and userGroup to get the ta name
             List<Attendance>toGetTA = attendanceRepository.findByCourseAndDateAndUserGroup(course,date,userGroup);
             for (int j = 0; j < toGetTA.size(); j++) {
                 User user = toGetTA.get(j).getUser();
@@ -150,36 +133,43 @@ public class TeachingAssistantService {
                     break;
                 }
             }
-            recents[i]=new Recent(course.getCourseCode(),taName,date.toString(),attendances.get(i).isPenalty());
+            // store backward to appear correctly in the app
+            recents[attendances.size()-1-i]=new Recent(course.getCourseCode(),taName,date.toString(),attendances.get(i).isPenalty());
         }
 
         return recents;
     }
-
+    //function that gets all the attendances that the ta started with the dates and the number of absences / attendances
     public TaRecent[] getRecentTA(int id){
         List<Attendance> attendances = attendanceRepository.findByUserID(id);
         TaRecent[] recents = new TaRecent[attendances.size()];
+        // loop that get all the student that attended/didn't attend.
         for (int i = 0; i < attendances.size(); i++) {
             ArrayList<User> toBeChecked=new ArrayList<>();
             Course course = attendances.get(i).getCourse();
             Date date = attendances.get(i).getDate();
             String userGroup = attendances.get(i).getUserGroup();
+            // get the attendances of the date above, course and group
             List<Attendance>todayAttendance = attendanceRepository.findByCourseAndDateAndUserGroup(course,date,userGroup);
             int attendedCounter = 0;
             int absenceCounter=0;
             for (int j = 0; j < todayAttendance.size(); j++) {
                 if (todayAttendance.get(j).getUser() instanceof TeachingAssistant)continue;
+                //to avoid wrong readings if contains many attendances of the same things in the same day
                 if (toBeChecked.contains(todayAttendance.get(j).getUser())) continue;
+                //check if the student was not absent
                 if (!(todayAttendance.get(j).isAbsent()) && todayAttendance.get(j).getId() > attendances.get(i).getId()){
                     attendedCounter++;
                     toBeChecked.add(todayAttendance.get(j).getUser());
                 }
+                // check if student was absent
                 else if (todayAttendance.get(j).isAbsent() && todayAttendance.get(j).getId() > attendances.get(i).getId()){
                     absenceCounter++;
                     toBeChecked.add(todayAttendance.get(j).getUser());
                 }
             }
-            recents[i] = new TaRecent(course.getCourseCode(),date.toString(),attendedCounter,absenceCounter);
+            // add the data from the most recent to the oldest
+            recents[attendances.size()-1-i] = new TaRecent(course.getCourseCode(),date.toString(),attendedCounter,absenceCounter,attendances.get(i).getUserGroup());
         }
         return recents;
     }

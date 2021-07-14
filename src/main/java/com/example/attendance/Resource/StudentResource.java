@@ -54,33 +54,30 @@ public class StudentResource {
         }
         return courses;
     }
-
+    // checks if there is any active attendance that i should attend by checking my courses,group and current date
     @GetMapping(value = "/checkAttendance")
     public @ResponseBody String checkAttendance(@RequestParam Integer studentID, @RequestParam String[] courses ,
                                        @RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date){
         Student student = studentService.findById(studentID).get();
         List<Attendance>attendances=null;
         for (int i = 0; i <courses.length ; i++) {
+            // get the user's data
             Course course = courseService.findByCourseName(courses[i]);
             UserCourse userCourse = studentCourseService.getUserCourse(student,course);
             String userGroup=userCourse.getUserGroup();
+            // find the ta's row that indicates an active attendance
             attendances = attendanceService.findAttendanceByCourseAndUserGroupAndDateAndAbsent(course,userGroup,date,false);
-            Optional<TeachingAssistant> optionalTa = null;
-           // int index=0;
             for (int j = 0; j < attendances.size(); j++) {
-
                 User user = attendances.get(j).getUser();
-                int id = user.getId();
-                optionalTa = teachingAssistantService.findTAById(id);
-                if (!optionalTa.isEmpty()) {
+                if (user instanceof TeachingAssistant) {
                     JSONObject jsonObject = attendanceService.getJsonFromAttendance(attendances.get(j));
                     return jsonObject.toString();
-
                 }
             }
             }
         return attendanceService.getJsonFromAttendance(new Attendance()).toString();
     }
+    // record the attendance of the student (change the boolean from 1 to 0) and if already recorded nothing will happen
 
     @GetMapping(value = "/attend")
     public @ResponseBody String attend(@RequestParam Integer studentID, @RequestParam String courseName ,
@@ -89,22 +86,23 @@ public class StudentResource {
         if (attendance.isAbsent()){
             return "the recording process is over";
         }
+        // get the student data
         Student student = studentService.findById(studentID).get();
         Course course = courseService.findByCourseName(courseName);
         UserCourse userCourse = studentCourseService.getUserCourse(student,course);
         String userGroup=userCourse.getUserGroup();
-        List<Attendance> attendancesAbsent = attendanceService.findAttendanceByCourseAndUserGroupAndDateAndAbsent(course,userGroup,date,true);
-        long attendanceID=0;
+        // get the absent student that should attend
+        List<Attendance> attendancesAbsent = attendanceService.findAttendanceByUserAndCourseAndUserGroupAndDateAndAbsent(student,course,userGroup,date,true);
         for (int i = 0; i <attendancesAbsent.size() ; i++) {
-            User user = attendancesAbsent.get(i).getUser();
-            int id = user.getId();
-            if (id == studentID && attendancesAbsent.get(i).getId()>attendance.getId()){
-                attendanceID=attendancesAbsent.get(i).getId();
-                break;
+            // check if the student's row id > ta's row id in the database
+            if (attendancesAbsent.get(i).getId()>attendance.getId()){
+               long attendanceID=attendancesAbsent.get(i).getId();
+                Attendance toBeAdded = new Attendance(attendanceID,student,course,userGroup,date,false);
+                attendanceService.addAttendance(toBeAdded);
+                return "attendance recorded successfully";
             }
         }
-        Attendance toBeAdded = new Attendance(attendanceID,student,course,userGroup,date,false);
-        attendanceService.addAttendance(toBeAdded);
-        return "attendance recorded successfully";
+
+        return "recording failed";
     }
 }
