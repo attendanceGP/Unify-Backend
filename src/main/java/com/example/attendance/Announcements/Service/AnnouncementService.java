@@ -79,7 +79,6 @@ public class AnnouncementService {
             JSONObject jsonObject = new JSONObject();
 
             String postedByType = null;
-            //String []class_string = announcement.getPostedBy().getClass().toString().split("\\.");
             if(announcement.getPostedBy() instanceof TeachingAssistant){
                 postedByType = "TA ";
             }
