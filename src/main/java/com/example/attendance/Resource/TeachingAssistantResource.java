@@ -58,6 +58,7 @@ public class TeachingAssistantResource {
         teachingAssistantService.closeTaAttendance(date, userGroup, courseId, userId);
 
     }
+
     @GetMapping(value = "updateTALocation")
     public @ResponseBody void updateTaLocation(@RequestParam int id ,@RequestParam double longitude,@RequestParam double latitude ){
         teachingAssistantService.updateTALocation(id,longitude,latitude);
@@ -70,7 +71,7 @@ public class TeachingAssistantResource {
 
     @GetMapping( path = "getExistingAttendanceGroups")
     public @ResponseBody List<String>  getExistingAttendanceGroups(@RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date date,
-                                                           @RequestParam String userGroup, @RequestParam String courseId, @RequestParam Integer userId){
-        return teachingAssistantService.attendanceGroupsAlreadyExist(date,userId,courseId,userGroup);
+                                                           @RequestParam String userGroup, @RequestParam String courseId){
+        return teachingAssistantService.attendanceGroupsAlreadyExist(date,courseId,userGroup);
     }
 }

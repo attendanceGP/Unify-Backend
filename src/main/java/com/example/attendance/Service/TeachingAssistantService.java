@@ -30,39 +30,92 @@ public class TeachingAssistantService {
 
     @Autowired
     private StudentResource studentResource;
+
+    // returns a teaching assistant object
     public Optional<TeachingAssistant> findTAById(Integer id){
         return teachingAssistantRepository.findById(id);
     }
 
-    public List<User> getRegisteredUserIds(String userGroup, String courseId){
+    /**
+     *
+     * List<User> getRegisteredUserIds(String userGroup, String courseId)
+     *
+     * Summary of the getRegisteredUserIds function:
+     *
+     *    get a list of users that are in a certain group and course
+     *
+     * Parameters   : userGroup: the group where we'll look for the users
+     *                courseId: the course where we will look for the users
+     *
+     * Return Value : a list of user objects that belong to the group and course given.
+     *
+     * Description:
+     *
+     *    This function looks for users that are registered in a specific course in a specific group.
+     *
+     */
+    public List<User> getRegisteredUsers(String userGroup, String courseId){
+        //getting all the userCourses that have the courseId and group we give
         List<UserCourse> UCs = userCourseRepository.findByCourseIdAndUserGroup(courseId,userGroup);
-        List<User> associatedIds = new ArrayList<User>();
+        
+        List<User> associatedUsers = new ArrayList<User>();
+
+        //adding the users from the UCs list to the associated users
         for(int i=0; i<UCs.size(); i++){
-            associatedIds.add(UCs.get(i).getUser());
+            associatedUsers.add(UCs.get(i).getUser());
         }
-        return associatedIds;
+        
+        return associatedUsers;
     }
 
-    //when posting attendance, for the TA if the absent boolean is false that means the TA is taking attendance
-    //and students can attend, otherwise if false no student can attend the course as the attendance is closed
-    //for students if absent is true this means they are absent if false this means they have attended said
-    //course in said date in said group
+    /**
+     *
+     * void postAttendance(Date date, String userGroup, String courseId, Integer userId)
+     *
+     * Summary of the postAttendance function:
+     *
+     *    starts the attendance recording process
+     *
+     * Parameters   : date: the date for which the attendance is being recorded
+     *                userGroup: the group for which attendance is being recorded
+     *                courseId: the course for which attendance is being recorded
+     *                userId: the id of the teaching assistant starting the process
+     *
+     * Return Value : nothing -- Note:adds records to the database.
+     *
+     * Description:
+     *
+     *    this function starts the attendance recording process by adding the teaching assistant's
+     *    attendance record to the database and setting their absence to 0(meaning they are present)
+     *    and then adding all of the student that are registered in the course the TA chose
+     *    in the groups they chose with the current date.
+     *
+     */
     public void postAttendance(Date date, String userGroup, String courseId, Integer userId){
         TeachingAssistant ta = teachingAssistantRepository.findById(userId).get();
 
         Course course = courseRepository.findById(courseId).get();
 
+        //array that is used when we have multiple groups being recorded at once
         String[] groups = userGroup.split(" ");
 
         if(groups.length == 1) {
+            //adding an attendance record for the teaching assistant
             Attendance attendance = new Attendance(ta, course, userGroup, date, false);
 
             attendanceRepository.save(attendance);
 
-            List<User> attendingStudentIds = getRegisteredUserIds(userGroup, courseId);
+            List<User> attendingStudentIds = getRegisteredUsers(userGroup, courseId);
+
             for (int i = 0; i < attendingStudentIds.size(); i++) {
+
+                //if condition to check the users, because the TAs have groups as well
+                // so if they belong to the same group as the students, they don't get
+                // recorded for attendance.
                 if(!(attendingStudentIds.get(i) instanceof Professor) &
                         !(attendingStudentIds.get(i) instanceof TeachingAssistant)){
+
+                    //adding a student record in the attendance table while setting absent to true
                     Attendance studentAttendance = new Attendance(attendingStudentIds.get(i), course, userGroup, date, true);
 
                     attendanceRepository.save(studentAttendance);
@@ -71,17 +124,20 @@ public class TeachingAssistantService {
         }
 
         else{
+            //this is the same as what is done inside the if, but here we repeat the process
+            //for each group by looping on all the groups we got
             for(int i=0;i<groups.length; i++){
                 Attendance multiAttendance = new Attendance(ta, course, groups[i], date, false);
 
                 attendanceRepository.save(multiAttendance);
 
-                List<User> attendingStudentIds = getRegisteredUserIds(groups[i], courseId);
+                List<User> attendingStudentIds = getRegisteredUsers(groups[i], courseId);
 
                 for (int j = 0; j < attendingStudentIds.size(); j++) {
-                    String []class_string = attendingStudentIds.get(j).getClass().toString().split("\\.");
-                    if(!(class_string[(class_string.length)-1].equals("TeachingAssistant")) &
-                            !(class_string[(class_string.length)-1].equals("Professor"))) {
+
+                    if(!(attendingStudentIds.get(i) instanceof Professor) &
+                            !(attendingStudentIds.get(i) instanceof TeachingAssistant)) {
+
                         Attendance studentAttendance = new Attendance(attendingStudentIds.get(j), course, groups[i], date, true);
 
                         attendanceRepository.save(studentAttendance);
@@ -189,6 +245,28 @@ public class TeachingAssistantService {
         return userCourseRepository.findCourseCodeById(userID);
         }
 
+    /**
+     *
+     * void closeTaAttendance(Date date, String userGroup, String courseId, Integer userId)
+     *
+     * Summary of the postAttendance function:
+     *
+     *    starts the attendance recording process
+     *
+     * Parameters   : date: the date for which the attendance was being recorded
+     *                userGroup: the group for which attendance was being recorded
+     *                courseId: the course for which attendance was being recorded
+     *                userId: the id of the teaching assistant ending the process
+     *
+     * Return Value : nothing -- Note:modifies the TA records in the database to be absent.
+     *
+     * Description:
+     *
+     *    this function ends the attendance recording process by setting the teaching assistant's
+     *    absence to 1 which blocks the students' ability to attend since this signifies the end
+     *    of the attendance recording process
+     *
+     */
     public void closeTaAttendance(Date date, String userGroup, String courseId, Integer userId) {
         String[] groups = userGroup.split(" ");
         if(groups.length == 1) {
@@ -207,11 +285,39 @@ public class TeachingAssistantService {
         teachingAssistantRepository.save(ta);
 
     }
+
+    //returns a TeachingAssistant object with the corresponding id
     public TeachingAssistant getTa(int id){
         return teachingAssistantRepository.findById(id).get();
     }
 
-    public List<String> attendanceGroupsAlreadyExist(Date date,Integer userId,String courseId,String groups){
+
+    /**
+     *
+     * List<String> attendanceGroupsAlreadyExist(Date date,Integer userId,String courseId,String groups)
+     *
+     * Summary of the attendanceGroupsAlreadyExist function:
+     *
+     *    gets all existing attendance groups in a specific course and date
+     *
+     * Parameters   : date: the date for which the attendance is being recorded
+     *                userId: the id of the teaching assistant trying to record attendance
+     *                courseId: the course for which attendance is being recorded
+     *                groups: the group for which attendance is being recorded
+     *
+     *
+     * Return Value : a list of strings containing the groups for which
+     *                attendance among the ones the TA has provided
+     *                has already been recorded for said date and course.
+     *
+     * Description:
+     *
+     *    this function takes the date the teaching assistant's id, the groups he wants to record
+     *    attendance for and the course and returns the groups among those that already have
+     *    an existing record associated with the TA's id and date and course
+     *
+     */
+    public List<String> attendanceGroupsAlreadyExist(Date date,String courseId,String groups){
         List<Attendance> TaAttendanceList = attendanceRepository.findByCourseAndDate(date,courseId);
         List<String> existingGroups = new ArrayList<>();
 
