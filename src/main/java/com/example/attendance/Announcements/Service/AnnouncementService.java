@@ -47,7 +47,8 @@ public class AnnouncementService {
 
         String[] groups = announcementGroups.split(" ");
 
-        if(groups.length == 1 && groups[0].toLowerCase().equals("all")){
+
+        if(groups.length == 1 && groups[0].equalsIgnoreCase("all")){
             try {
                 firebaseMessagingService.sendNotification("New announcement",
                         courseId + ": " + title, courseId);
