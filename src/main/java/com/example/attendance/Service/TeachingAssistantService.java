@@ -135,8 +135,8 @@ public class TeachingAssistantService {
 
                 for (int j = 0; j < attendingStudentIds.size(); j++) {
 
-                    if(!(attendingStudentIds.get(i) instanceof Professor) &
-                            !(attendingStudentIds.get(i) instanceof TeachingAssistant)) {
+                    if(!(attendingStudentIds.get(j) instanceof Professor) &
+                            !(attendingStudentIds.get(j) instanceof TeachingAssistant)) {
 
                         Attendance studentAttendance = new Attendance(attendingStudentIds.get(j), course, groups[i], date, true);
 
