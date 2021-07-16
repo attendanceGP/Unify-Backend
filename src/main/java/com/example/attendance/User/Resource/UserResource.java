@@ -1,8 +1,8 @@
 package com.example.attendance.User.Resource;
 
-import com.example.attendance.Service.CourseService;
-import com.example.attendance.Service.UserCourseService;
-import com.example.attendance.Service.StudentService;
+import com.example.attendance.Course.Service.CourseService;
+import com.example.attendance.Course.Service.UserCourseService;
+import com.example.attendance.User.Service.StudentService;
 import com.example.attendance.User.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -2,12 +2,15 @@ package com.example.attendance.Announcements.Service;
 
 import com.example.attendance.Announcements.Model.Announcement;
 import com.example.attendance.Announcements.Repository.AnnouncementRepository;
+import com.example.attendance.Course.Model.Course;
 import com.example.attendance.FirebaseMessaging.FirebaseMessagingService;
-import com.example.attendance.Models.*;
 
-import com.example.attendance.Repository.CourseRepository;
-import com.example.attendance.Repository.TeachingAssistantRepository;
-import com.example.attendance.Repository.UserCourseRepository;
+import com.example.attendance.Course.Repository.CourseRepository;
+import com.example.attendance.User.Models.Professor;
+import com.example.attendance.User.Repository.TeachingAssistantRepository;
+import com.example.attendance.Course.Repository.UserCourseRepository;
+import com.example.attendance.User.Models.TeachingAssistant;
+import com.example.attendance.Course.Model.UserCourse;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -90,10 +93,6 @@ public class AnnouncementService {
         }
     }
 
-    //deletes an announcement from the database according to its date,title, associated course
-    // and the id of the user
-    //that posted it, used for the recycler view
-
     //deletes an announcement from the database
     public void deleteAnnouncement(Integer id){
         announcementRepository.deleteById(id);
@@ -146,7 +145,7 @@ public class AnnouncementService {
             if(announcement.getPostedBy() instanceof TeachingAssistant){
                 postedByType = "TA ";
             }
-            else if(announcement.getPostedBy() instanceof TeachingAssistant){
+            else if(announcement.getPostedBy() instanceof Professor){
                 postedByType = "DR ";
             }
 

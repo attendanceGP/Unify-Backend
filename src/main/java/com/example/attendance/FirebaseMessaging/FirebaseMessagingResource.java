@@ -1,8 +1,6 @@
 package com.example.attendance.FirebaseMessaging;
 
-import com.example.attendance.Models.Student;
-import com.example.attendance.Models.UserCourse;
-import com.example.attendance.Service.UserCourseService;
+import com.example.attendance.Course.Service.UserCourseService;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,11 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * this is made to test the notification only
