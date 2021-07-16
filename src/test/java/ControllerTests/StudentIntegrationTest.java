@@ -2,11 +2,11 @@ package ControllerTests;
 
 import UseCaseTestingInterfaces.AddUseCase;
 import com.example.attendance.AttendanceApplication;
-import com.example.attendance.Models.Student;
-import com.example.attendance.Resource.StudentResource;
-import com.example.attendance.Service.CourseService;
-import com.example.attendance.Service.UserCourseService;
-import com.example.attendance.Service.StudentService;
+import com.example.attendance.User.Models.Student;
+import com.example.attendance.User.Resource.StudentResource;
+import com.example.attendance.Course.Service.CourseService;
+import com.example.attendance.Course.Service.UserCourseService;
+import com.example.attendance.User.Service.StudentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;

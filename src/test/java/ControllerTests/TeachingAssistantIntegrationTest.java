@@ -1,8 +1,8 @@
 package ControllerTests;
 
 import com.example.attendance.AttendanceApplication;
-import com.example.attendance.Resource.TeachingAssistantResource;
-import com.example.attendance.Service.TeachingAssistantService;
+import com.example.attendance.User.Resource.TeachingAssistantResource;
+import com.example.attendance.User.Service.TeachingAssistantService;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

@@ -1,21 +1,15 @@
 package com.example.attendance.User.Service;
 
-import com.example.attendance.Models.Professor;
-import com.example.attendance.Models.Student;
-import com.example.attendance.Models.TeachingAssistant;
-import com.example.attendance.Models.User;
-import com.example.attendance.QueryUtils;
-import com.example.attendance.Repository.*;
+import com.example.attendance.User.Models.Professor;
+import com.example.attendance.User.Models.Student;
+import com.example.attendance.User.Models.User;
+import com.example.attendance.User.Repository.StudentRepository;
 import com.example.attendance.User.Repository.UserRepository;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.json.JSONObject;
 
-import javax.swing.text.html.Option;
-import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;

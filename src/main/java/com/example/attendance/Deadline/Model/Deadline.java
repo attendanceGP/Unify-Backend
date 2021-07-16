@@ -1,7 +1,7 @@
 package com.example.attendance.Deadline.Model;
 
-import com.example.attendance.Models.Course;
-import com.example.attendance.Models.User;
+import com.example.attendance.Course.Model.Course;
+import com.example.attendance.User.Models.User;
 
 import javax.persistence.*;
 import java.util.Date;

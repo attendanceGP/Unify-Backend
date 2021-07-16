@@ -2,15 +2,15 @@
 package com.example.attendance.Resource;
 
 import com.example.attendance.AttendanceApplication;
-import com.example.attendance.Models.Attendance;
-import com.example.attendance.Models.Course;
-import com.example.attendance.Models.Student;
-import com.example.attendance.Repository.AttendanceRepository;
-import com.example.attendance.Repository.CourseRepository;
-import com.example.attendance.Repository.StudentRepository;
-import com.example.attendance.Service.AttendanceService;
-import com.example.attendance.Service.CourseService;
-import com.example.attendance.Service.StudentService;
+import com.example.attendance.Attendance.Model.Attendance;
+import com.example.attendance.Course.Model.Course;
+import com.example.attendance.User.Models.Student;
+import com.example.attendance.Attendance.Repository.AttendanceRepository;
+import com.example.attendance.Course.Repository.CourseRepository;
+import com.example.attendance.User.Repository.StudentRepository;
+import com.example.attendance.Attendance.Service.AttendanceService;
+import com.example.attendance.Course.Service.CourseService;
+import com.example.attendance.User.Service.StudentService;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

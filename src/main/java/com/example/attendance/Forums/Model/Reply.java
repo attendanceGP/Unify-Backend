@@ -1,6 +1,6 @@
 package com.example.attendance.Forums.Model;
 
-import com.example.attendance.Models.User;
+import com.example.attendance.User.Models.User;
 
 import javax.persistence.*;
 import java.util.Date;
