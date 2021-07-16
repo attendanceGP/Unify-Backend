@@ -36,11 +36,6 @@ public class Reply {
         this.description = description;
     }
 
-//    todo for recursive replies
-//    @ManyToOne
-//    @JoinColumn(name ="fk_parent_reply_id")
-//    private Reply parent_reply;
-
     public Integer getId() {
         return id;
     }
@@ -75,12 +70,5 @@ public class Reply {
     public void setDescription(String description) {
         this.description = description;
     }
-
-//    public Reply getParent_reply() {
-//        return parent_reply;
-//    }
-//    public void setParent_reply(Reply parent_reply) {
-//        this.parent_reply = parent_reply;
-//    }
 
 }

@@ -16,22 +16,41 @@ public class ForumResource {
     @Autowired
     private ForumService forumService;
 
-//    Get student's forums (his courses)
+//  -------------  Posts
+
+    /**
+     * Get API.
+     * API for retrieving posts
+     * @param userId
+     * @return JSONArray object containing all posts
+     */
     @GetMapping(path = "getStudentForums")
     public @ResponseBody
     String getStudentForums(@RequestParam Integer userId){
         return forumService.getStudentPosts(userId).toString();
     }
 
-//    Get Post Replies
+    /**
+     * Get API.
+     * API for getting replies for a specific forum (post) given postID
+     * @param postId
+     * @return JSONArray object containing all post replies.
+     */
     @GetMapping(path = "getPostReplies")
     public @ResponseBody
     String getPostReplies(@RequestParam Integer postId){
         return forumService.getPostReplies(postId).toString();
     }
 
-
-//    Posts
+    /**
+     * Post API.
+     * API for adding a new post to database.
+     * @param userId
+     * @param courseCode
+     * @param date
+     * @param title
+     * @param content
+     */
     @PostMapping(path = "addPost")
     public @ResponseBody
     void addPost(@RequestParam Integer userId, @RequestParam String courseCode,
@@ -40,6 +59,11 @@ public class ForumResource {
         forumService.addPost(userId, courseCode, date, title, content);
     }
 
+    /**
+     * Post API.
+     * API for deleting a forum(post)
+     * @param postId
+     */
     @PostMapping(path = "removePost")
     public @ResponseBody
     void removePost(@RequestParam Integer postId) {
@@ -47,7 +71,16 @@ public class ForumResource {
     }
 
 
-//    Replies
+//  -------------  Replies
+
+    /**
+     * Post API.
+     * API for adding a reply.
+     * @param userId
+     * @param postId
+     * @param date
+     * @param description
+     */
     @PostMapping(path = "addReply")
     public @ResponseBody
     void addReply(@RequestParam Integer userId, @RequestParam Integer postId,
@@ -56,6 +89,11 @@ public class ForumResource {
         forumService.addReply(userId, postId, date, description);
     }
 
+    /**
+     * Post API.
+     * API for deleting a reply.
+     * @param replyId
+     */
     @PostMapping(path = "removeReply")
     public @ResponseBody
     void removeReply(@RequestParam Integer replyId) {

@@ -31,11 +31,21 @@ public class ForumService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * retrieving posts for a user given his courses.
+     * @param userId
+     * @return JSON Array object containing all posts
+     */
     public JSONArray getStudentPosts(Integer userId) {
         JSONArray jsonArray = getJsonFromPosts((postRepository.getStudentPosts(userId)));
         return jsonArray;
     }
 
+    /**
+     * creating JSONArray object from Posts.
+     * @param Posts
+     * @return JSONArray object
+     */
     private JSONArray getJsonFromPosts(List<Post> Posts){
         JSONArray jsonArray = new JSONArray();
 
@@ -56,11 +66,21 @@ public class ForumService {
         return jsonArray;
     }
 
+    /**
+     * retrieving replies for a specific post given its ID
+     * @param postId
+     * @return JSONArray object containing all post replies.
+     */
     public JSONArray getPostReplies(Integer postId){
         JSONArray jsonArray = getJsonFromReplies((replyRepository.getPostReplies(postId)));
         return jsonArray;
     }
 
+    /**
+     * creating JSONArray object from Replies.
+     * @param postReplies
+     * @return JSONArray object
+     */
     private JSONArray getJsonFromReplies(List<Reply> postReplies) {
         JSONArray jsonArray = new JSONArray();
 
@@ -80,7 +100,14 @@ public class ForumService {
         return jsonArray;
     }
 
-
+    /**
+     * adding a new post.
+     * @param userId
+     * @param courseCode
+     * @param date
+     * @param title
+     * @param content
+     */
     public void addPost(Integer userId, String courseCode, Date date, String title, String content) {
         User user = userRepository.findById(userId).get();
         Course course = courseRepository.findById(courseCode).get();
@@ -92,11 +119,28 @@ public class ForumService {
         System.out.println(" post details : " + userId + " " + courseCode + "\t" + date + "\t" + title + "\t" + content);
     }
 
+    /**
+     * removing a post.
+     * first: removing post replies.
+     * second: removing the post.
+     * @param postId
+     */
     public void removePost(Integer postId) {
         removePostReplies(postId);
         postRepository.deletePostById(postId);
     }
 
+    public void removePostReplies(Integer postId){
+        replyRepository.deleteReplyByPostId(postId);
+    }
+
+    /**
+     * adding a new reply
+     * @param userId
+     * @param postId
+     * @param date
+     * @param description
+     */
     public void addReply(Integer userId, Integer postId, Date date, String description) {
         User user = userRepository.findById(userId).get();
         Post post = postRepository.findById(postId);
@@ -108,12 +152,14 @@ public class ForumService {
         System.out.println(" reply details : " + userId + " " + postId + "\t" + date + "\t" + description);
     }
 
+    /**
+     * removing a reply by its ID.
+     * @param replyId
+     */
     public void removeReply(Integer replyId) {
         replyRepository.deleteReplyById(replyId);
     }
 
-    public void removePostReplies(Integer postId){
-        replyRepository.deleteReplyByPostId(postId);
-    }
+
 
 }
