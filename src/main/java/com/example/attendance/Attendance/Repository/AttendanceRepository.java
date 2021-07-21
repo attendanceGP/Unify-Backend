@@ -58,4 +58,19 @@ public interface AttendanceRepository extends CrudRepository<Attendance, Long> {
     @Query(value = "SELECT * from attendance WHERE date = :dateValue and fk_course_id = :courseId ;", nativeQuery = true)
     List<Attendance> findByCourseAndDate(@Param("dateValue") Date date, @Param("courseId") String courseId);
 
+    @Query(value = "SELECT * FROM attendance WHERE absent = 0 " +
+            "AND (:userId IS NULL OR fk_user_id = :userId) " +
+            "AND (:courseCode IS NULL OR fk_course_id = :courseCode) " +
+            "AND (:group IS NULL OR user_group = :group) " +
+            "AND (:date IS NULL OR date = :date) ;", nativeQuery = true)
+    List<Attendance> getAttendanceForUni(@Param("userId") Integer userId, @Param("courseCode") String courseCode,
+                                         @Param("group") String group, @Param("date") Date date);
+
+    @Query(value = "SELECT * FROM attendance WHERE absent = 1 " +
+            "AND (:userId IS NULL OR fk_user_id = :userId) " +
+            "AND (:courseCode IS NULL OR fk_course_id = :courseCode) " +
+            "AND (:group IS NULL OR user_group = :group) " +
+            "AND (:date IS NULL OR date = :date) ;", nativeQuery = true)
+    List<Attendance> getAbsenceForUni(@Param("userId") Integer userId, @Param("courseCode") String courseCode,
+                                         @Param("group") String group, @Param("date") Date date);
 }

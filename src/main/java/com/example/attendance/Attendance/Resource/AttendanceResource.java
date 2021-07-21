@@ -75,4 +75,26 @@ public class AttendanceResource {
         attendanceService.confirmAttendance(courseID, group, date);
     }
 
+    // uni APIS
+    @GetMapping(path = "/getAttendanceForUni")
+    public @ResponseBody
+    String getAttendanceForUni(@RequestParam("key") String key,
+                             @RequestParam(value = "userId", required = false) Integer userId,
+                             @RequestParam(value = "courseCode", required = false) String courseCode,
+                             @RequestParam(value = "group", required = false) String group,
+                             @RequestParam(value = "date", required = false)
+                             @DateTimeFormat(pattern = "dd-MM-yyyy") Date date){
+        return attendanceService.getAttendanceForUni(key, userId, courseCode, group, date).toString();
+    }
+
+    @GetMapping(path = "/getAbsenceForUni")
+    public @ResponseBody
+    String getAbsenceForUni(@RequestParam("key") String key,
+                               @RequestParam(value = "userId", required = false) Integer userId,
+                               @RequestParam(value = "courseCode", required = false) String courseCode,
+                               @RequestParam(value = "group", required = false) String group,
+                               @RequestParam(value = "date", required = false)
+                               @DateTimeFormat(pattern = "dd-MM-yyyy") Date date){
+        return attendanceService.getAbsenceForUni(key, userId, courseCode, group, date).toString();
+    }
 }

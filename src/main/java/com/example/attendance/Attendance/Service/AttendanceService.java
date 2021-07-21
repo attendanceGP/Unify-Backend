@@ -128,4 +128,51 @@ public class AttendanceService {
             }
         }
     }
+
+    public JSONArray getAttendanceForUni(String key, Integer userId, String courseCode, String group, Date date) {
+        if(!key.equals("unitest")) return new JSONArray();
+
+        List<Attendance> attendanceList =
+                attendanceRepository.getAttendanceForUni(userId, courseCode, group, date);
+
+        JSONArray jsonArray = new JSONArray();
+
+        for(Attendance i: attendanceList){
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("user_ID", i.getUser().getId());
+            jsonObject.put("course_code", i.getCourse().getCourseCode());
+            jsonObject.put("name", i.getUser().getName());
+            jsonObject.put("user_group", i.getUserGroup());
+            jsonObject.put("date", i.getDate());
+
+            jsonArray.put(jsonObject);
+        }
+
+        return jsonArray;
+    }
+
+    public JSONArray getAbsenceForUni(String key, Integer userId, String courseCode, String group, Date date) {
+        if(!key.equals("unitest")) return new JSONArray();
+
+        List<Attendance> attendanceList =
+                attendanceRepository.getAbsenceForUni(userId, courseCode, group, date);
+
+        JSONArray jsonArray = new JSONArray();
+
+        for(Attendance i: attendanceList){
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("user_ID", i.getUser().getId());
+            jsonObject.put("course_code", i.getCourse().getCourseCode());
+            jsonObject.put("name", i.getUser().getName());
+            jsonObject.put("user_group", i.getUserGroup());
+            jsonObject.put("penalty", i.isPenalty());
+            jsonObject.put("date", i.getDate());
+
+            jsonArray.put(jsonObject);
+        }
+
+        return jsonArray;
+    }
 }
